@@ -17,7 +17,7 @@ It's a scripting language designed to be embedded in application or webApp.
 The 2 main goals are to:
 * Make the language easy to learn and use for beginner
 * Make a language that can easily be represented visually
-* 
+
 This language can look similar to other existing language, but it has some specifities:
 * Built around expressions (think about excel formula)
 * Only one loop `For` (no while, foreach, ...)
