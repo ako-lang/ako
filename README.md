@@ -1,5 +1,7 @@
 # AKO Language
 
+![logo](./logo.png)
+
 ## Description
 
 **AKO** is a programming language built to be used by no-code or low-code tools
