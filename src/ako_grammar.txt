@@ -1,0 +1,109 @@
+Ako {
+  Program = Stmt*
+
+  // Statement
+  Block = "{" Stmt* "}"
+  Stmt = (Assign | AssignTask | TaskDef | Task | Param | If | ForLoop | Expr)
+  
+  Assign = AssignLeft | AssignAdd | AssignIncr | AssignDecr
+  AssignTask = Var "=" Task
+  AssignLeft = Var "=" Expr
+  AssignAdd = Var "+=" Expr
+  AssignIncr = Var "++"
+  AssignDecr = Var "--"
+  Param = "param" Id "=" Term
+  
+  TaskDef = "task" Id Block
+  Task = "@" (Id ".")? Id "(" Arguments ")"
+  Arguments = ListOf<Expr, ",">
+  
+  // Expression
+  Expr =  LambdaInline | Fn | MathExpr | Term
+  Term =Var | Number | String | bool | Array | Dictionary | Last
+  Fn = (Id ".")? Id "(" Arguments ")"
+  // Lambda = "(" ListOf<Id, ","> ")" "=>" Block
+  LambdaInline = "(" ListOf<Id, ","> ")" "=>" Expr
+  
+  // Math
+  MathExpr = BinExpr
+
+  BinExpr = BinExpr "and" EqExpr  -- and
+    | BinExpr "or" EqExpr  -- or
+    | EqExpr
+    
+  EqExpr = EqExpr "==" AddExpr -- eq
+    | EqExpr "!=" AddExpr   -- neq
+    | EqExpr "<" AddExpr	-- lt
+    | EqExpr "<=" AddExpr  -- lte
+    | EqExpr ">" AddExpr	-- gt
+    | EqExpr ">=" AddExpr  -- gte
+    | AddExpr
+
+  AddExpr = AddExpr "+" MulExpr  -- plus
+    | AddExpr "-" MulExpr  -- minus
+    | MulExpr
+
+  MulExpr = MulExpr "*" PriExpr  -- times
+    | MulExpr "/" PriExpr  -- divide
+    | MulExpr "%" PriExpr  -- mod
+    | PriExpr
+  
+  PriExpr = "(" Expr ")"  -- paren
+    | "+" PriExpr   -- pos
+    | "-" PriExpr   -- neg
+    | "NOT" PriExpr   -- not
+    | Term "++"  -- inc
+    | Term "Term"  -- dec
+    | Term
+    
+  // Conditionnal
+  If = "if" Expr Block
+     ("elif" Expr Block)*
+     ("else" Block)?
+  
+  // Loop
+  ForLoop =  Foreach | While | Infinite | Continue | Return
+  Foreach = "for" Id ("," Id)? ":=" Expr Block
+  While = "for" Expr Block
+  Infinite = "for" Block
+  Continue = "continue"
+  Return = "return" Expr
+  
+  // Identifier / Variable
+  Last = "$"
+  Var =  Var "[" Expr "]"    -- subscript
+              |  Var "[" Expr? ":" Expr? "]"    -- range
+              |  Var "." Id  -- select
+              |  Id -- single
+  Id  = ~(keyword) (letter alnum*)
+  keyword = "$" | "task" | "param" | "for" | "false" | "true" | "or" | "and" | "not" | "if" | "elif" | "else" | "continue" | "return" | "param"
+  
+  // List
+  Array       = "[" ListOf<Expr, ","> "]"
+  Dictionary  = "{" ListOf<KeyValue, ","> "}"
+  KeyValue = Id "=" Expr
+
+  // Boolean
+  bool = "true" | "false"
+  
+  // String
+  String = sqString | dqString | emptyString
+  squote = "'"
+  sqString = (squote (~squote any)+ squote)
+  dquote = "\""
+  dqString = (dquote (~dquote any)+ dquote)
+  emptyString = "\"\"" | "''"
+
+  // Number
+  Number  (a number literal)
+    = hex | float | int
+    
+  int    = digit+
+  float  = digit+ "." digit+
+  hex    = "#" hexDigit+
+    
+  // Other
+  space := "\t" | " " | "\n" | "\r" | comment | multilinecomment
+  comment = "//" (~"\n" any)*
+  multilinecomment = "/*" (~"*/"any)* "*/"
+}

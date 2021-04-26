@@ -1,0 +1,56 @@
+## Basic
+
+The key element of Ako language is to represent algorithm as a succession of separated Commands.
+
+And there is only a really limited set of possible Commands. The more commons are:
+* Assign a variable with: `=`
+* Conditional with: `If`
+* Loop with: `For`
+* Execute a task with: `@`
+
+### Sample (fibonachi sequence)
+
+```js
+// We create a task to compute fibo
+task fibo {
+    if args[0] <= 0 { return 0 }
+    elif args[0] == 1 { return 1 }
+
+    prev1 = @fibo(args[0] - 1)
+    prev2 = @fibo(args[0] - 2)
+    return prev1 + prev2
+}
+
+// We call our task and print the result
+fibo15 = @fibo(15)
+@print("Fibo(15) = {fibo15}")
+```
+
+### Basic
+
+#### Variable
+
+```js
+// Create simple variables
+num = 2
+float = 2.5
+str = "tuna"
+bool = true
+
+// Create list
+list = [1, 2, 3, 4]
+
+// Create dictionary
+pos = { x = 1, y = 2, z = 3 }
+```
+
+#### Expression
+```js
+num = 2 + 1
+float = num * 1.5
+```
+
+#### Expression using function
+```js
+num = Math.max(2 + 1, 2 * 2)
+```
