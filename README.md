@@ -4,7 +4,9 @@
 
 ## Description
 
-**AKO** is a programming language built to be used by no-code or low-code tools
+**AKO** is a programming language built to be used by no-code or low-code tools.
+
+**[WIP] Project under construction**
 
 It's a scripting language designed to be embedded in application or webApp.
 
