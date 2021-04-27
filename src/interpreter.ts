@@ -60,6 +60,7 @@ export class Interpreter {
 
     callFunction (name: string, ...args: any) {
         const fn = this.functions.get(name)
+        if (!fn) throw new Error(`Unknown Function ${name}`)
         return fn(...args)
     }
 
@@ -74,6 +75,7 @@ export class Interpreter {
 
     callTask (ctx: Context, entry: any, entryData: any, timeRemains: number) {
         const fn = this.tasks.get(entryData.meta.fn)
+        if (!fn) throw new Error(`Unknown Task ${entryData.meta.fn}`)
         return fn(ctx, entry, entryData, timeRemains)
     }
 

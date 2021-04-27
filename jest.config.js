@@ -1,5 +1,10 @@
 module.exports = {
+    testEnvironment: 'node',
+    transformIgnorePatterns: [
+        '<rootDir>/node_modules/',
+        '<rootDir>/dist/'
+    ],
     transform: {
-        "^.+\\.tsx?$": "esbuild-jest-transform"
+        "^.+\\.ts$": "esbuild-jest-transform"
     }
 };

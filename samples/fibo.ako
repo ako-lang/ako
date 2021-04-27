@@ -1,0 +1,8 @@
+val = args[0]
+
+if val <= 0 { return 0 }
+elif val == 1 { return 1 }
+
+prev1 = @fibo(args[0] - 1)
+prev2 = @fibo(args[0] - 2)
+return prev1 + prev2

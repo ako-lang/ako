@@ -1,6 +1,6 @@
 {
   "name": "ako-lang",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "./dist/web/ako-web.js",
   "bin": "./dist/node/ako.js",
@@ -16,7 +16,7 @@
     "package:macos": "cd dist && nexe --input=./node/ako.js --output=./bin/ako-osx --target=darwin-12.12.0",
     "package:linux": "cd dist && nexe --input=./node/ako.js --output=./bin/ako-linux --target=linux-12.12.0",
     "test": "run-s test:*",
-    "test:jest": "jest"
+    "test:jest": "jest --config jest.config.js"
   },
   "author": "",
   "license": "MIT",
@@ -29,7 +29,6 @@
     "esbuild": "^0.11.15",
     "esbuild-jest-transform": "^1.0.4",
     "jest": "^26.6.3",
-    "jest-esbuild": "^0.1.6",
     "nexe": "^4.0.0-beta.18",
     "npm-run-all": "^4.1.5"
   }

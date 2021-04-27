@@ -36,7 +36,10 @@ export const LoopFor = {
                 index: 0,
                 block: block.uid
             }
-            if (Array.isArray(entryData.meta.indexVar) && entryData.meta.indexVar.length === 0) entryData.meta.indexVar = undefined
+            
+            if (Array.isArray(entryData.meta.indexVar) && entryData.meta.indexVar.length === 0) {
+                entryData.meta.indexVar = undefined
+            }
         }
        
         // Iterate

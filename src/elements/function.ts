@@ -19,6 +19,10 @@ export const Task = {
     execute: (ctx, entry, entryData, timeRemains) => {
         if (!entryData.meta) {
             let fn = ctx.vm.evaluate(ctx, entry.name)
+            if (entry.namespace && entry.namespace.length > 0) {
+                let namespace = ctx.vm.evaluate(ctx, entry.namespace[0], true)
+                fn = `${namespace}.${fn}`
+            }
             const args = entry.args.map(x => ctx.vm.evaluate(ctx, x, true))
             entryData.meta = { fn, args }
         }

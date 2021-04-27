@@ -1,0 +1,7 @@
+{
+    "id": "Test Project",
+    "entry": ["main.ako"],
+    "deps": [
+        "./math"
+    ]
+}
