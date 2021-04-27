@@ -75,7 +75,7 @@ export const LoopFor = {
 
         return {
             timeRemains,
-            done: entry.meta.index >= entry.meta.iterator.length
+            done: entryData.meta.index >= entryData.meta.iterator.length
         }
     }
 }

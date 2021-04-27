@@ -15,7 +15,7 @@
 
 It's a scripting language designed to be embedded in application or webApp
 
-[Language Grammar](./docs/grammar_basic.md)
+[Language Grammar](./docs/grammar_basic.md) | [Playground](https://codesandbox.io/s/ako-template-2qwb5?file=/src/index.js)
 
 ## Goals
 The 2 main goals are to:
@@ -25,11 +25,11 @@ The 2 main goals are to:
 ## Design decision
 This language tries to stay simple:
 * Built around expressions (think about excel formula)
-* Only one loop `For` (no while, foreach, ...)
-* No switch, goto, try/catch, ...
 * Simple scope design, 1file = 1task = 1scope
 * No callback or async/await
 * No class or OOP (no `this`, `self` or `object` scope)
+* Only one loop `For` (no while, foreach, ...)
+* No switch, goto, try/catch, ...
 * Provide a way to share and reuse components
 
 ---

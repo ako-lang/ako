@@ -1,13 +1,11 @@
 export default {
     'sleep': (ctx, entry, entryData, timeRemains) => {
-        // console.log('sleep', fn)
         const duration = entryData.meta.args[0] || 0
+        if (!entryData.elapsed) entryData.elapsed = 0
+        
         entryData.elapsed += timeRemains
-        if (entryData.elapsed >= duration) {
-            // console.log('Finish Waiting', fn.uid, fn.elapsed - timeRemains)
-            return { timeRemains: entryData.elapsed - duration, done: true }
-        }
-        // console.log('WAITING !', fn.uid, fn.elapsed)
+        
+        if (entryData.elapsed >= duration) return { timeRemains: entryData.elapsed - duration, done: true }
         return { timeRemains: 0, done: false }
     }
 }
