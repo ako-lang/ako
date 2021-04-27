@@ -15,7 +15,7 @@
 
 It's a scripting language designed to be embedded in application or webApp
 
-[Language Grammar](./docs/grammar_basic.md) | [Playground](https://codesandbox.io/s/ako-template-2qwb5?file=/src/index.js)
+[Language](https://ako-lang.github.io/ako/index.html#/./docs/grammar_basic) | [Playground](https://codesandbox.io/s/ako-template-2qwb5?file=/src/index.js)
 
 ## Goals
 The 2 main goals are
