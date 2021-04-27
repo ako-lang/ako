@@ -19,6 +19,9 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run package
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

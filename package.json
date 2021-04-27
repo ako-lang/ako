@@ -1,6 +1,6 @@
 {
   "name": "ako-lang",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "./dist/web/ako-web.js",
   "bin": "./dist/node/ako.js",
