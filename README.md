@@ -1,4 +1,4 @@
-![logo](./logo.png)
+![logo](https://raw.githubusercontent.com/ako-lang/ako/master/logo.png)
 
 [![NPM Version](https://img.shields.io/npm/v/ako-lang.svg)](https://npmjs.org/package/ako-lang)
 [![NPM Download](https://img.shields.io/npm/dm/ako-lang.svg)](https://npmjs.org/package/ako-lang)
@@ -36,7 +36,7 @@ For those reasons, **Ako** tries to stay simple
 
 ## Getting Started
 
-### From npm
+### From NPM
 
 ```sh
 # Install Ako interpreter
@@ -46,10 +46,18 @@ npm install -g ako-lang
 ako ./test.ako
 ```
 
-### Install the executable
+### Standalone Executable
 
-**Soon**
+You can directly use standalone executable of the interpreter : [Release page](https://github.com/ako-lang/ako/releases)
+
+It's compiled for **Windows**, **Mac** and **Linux** and once downloaded, you can use it to run Ako scripts
+```sh
+./ako.exe test.ako
+```
 
 ### CDN
 
-**Soon**
+For web usage, you can load the library directly with ESM imports
+```js
+import * as Ako from 'https://cdn.jsdelivr.net/npm/ako-lang@0.0.5/dist/web/ako-web.js'
+```
