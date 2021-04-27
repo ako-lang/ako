@@ -1,23 +1,28 @@
-# AKO Language
-
 ![logo](./logo.png)
+
+[![NPM Version](https://img.shields.io/npm/v/ako-lang.svg)](https://npmjs.org/package/ako-lang)
+[![NPM Download](https://img.shields.io/npm/dm/ako-lang.svg)](https://npmjs.org/package/ako-lang)
+[![CDN Download](https://data.jsdelivr.com/v1/package/npm/ako-lang/badge)](https://www.jsdelivr.com/package/npm/ako-lang)
+[![License](https://img.shields.io/npm/l/ako-lang.svg)](https://npmjs.org/package/ako-lang)
+
+# AKO Language
 
 ## Description
 
-**AKO** is a programming language built to be used by no-code or low-code tools.
+**AKO** is a programming language built to be used by no-code or low-code tools
 
 **[WIP] Project under construction**
 
-It's a scripting language designed to be embedded in application or webApp.
+It's a scripting language designed to be embedded in application or webApp
 
 [Language Grammar](./docs/grammar_basic.md)
 
-## Design decision
-
+## Goals
 The 2 main goals are to:
 * Make the language easy to learn and use for beginner
-* Make a language that can easily be represented visually
+* Make a language that can easily be represented visually in UI land
 
+## Design decision
 This language tries to stay simple:
 * Built around expressions (think about excel formula)
 * Only one loop `For` (no while, foreach, ...)
