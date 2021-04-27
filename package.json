@@ -1,6 +1,6 @@
 {
   "name": "ako-lang",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "./dist/ako-web.js",
   "bin": "./dist/ako.js",
@@ -16,8 +16,7 @@
     "package:macos": "cd dist && nexe --input=./ako.js --output=./ako-osx --target=darwin-12.12.0",
     "package:linux": "cd dist && nexe --input=./ako.js --output=./ako-linux --target=linux-12.12.0",
     "test": "run-s test:*",
-    "test:prebuild": "esbuild ./src/flavor/node.ts --sourcemap=inline --bundle --platform=node --outfile=dist/test.js",
-    "test:jest": "jest --coverage"
+    "test:jest": "jest"
   },
   "author": "",
   "license": "ISC",
