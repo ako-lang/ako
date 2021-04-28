@@ -51,7 +51,8 @@ function loadAkoModule(vm, projectFolder) {
     if (mod.entry) {
         for (let file of mod.entry) {
             const fileId = file.replace('.ako', '')
-            const match = grammar.match(`@${namespace ? `${namespace}.${fileId}` : fileId}()`)
+            const method = namespace ? `${namespace}.${fileId}` : fileId
+            const match = grammar.match(`@${method}()`)
             const ast = ASTBuilder(match).toAST()
             console.log('Create Stack >', fileId)
             vm.createStack(ast)
@@ -71,8 +72,8 @@ const vm = new Interpreter()
 
 // Open a project
 const projectFolder = path.dirname(file)
-const packagePath = path.join(projectFolder, 'module.json')
-if (fs.existsSync(packagePath)) {
+const modulePath = path.join(projectFolder, 'module.json')
+if (fs.existsSync(modulePath)) {
     loadAkoModule(vm, projectFolder)
 } else {
     const codeTxt = fs.readFileSync(path.resolve(file))

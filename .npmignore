@@ -1,8 +1,21 @@
-coverage
-dist/bin
-docs
+# Standard folder
 node_modules
+coverage
+docs
 public
 src
 tests
 tools
+.github
+
+# Clean build
+dist/bin
+dist/**/*.js.map
+
+# Clean individual files
+.nojekyll
+_sidebar.md
+logo.png
+index.html
+jest.config.js
+jest.esbuild.js

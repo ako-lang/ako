@@ -38,11 +38,7 @@ export const TaskDef = {
         return { type: 'TaskDef', name, block }
     },
     execute: (ctx, entry, entryData, timeRemains) => {
-        // console.log('Register new command', entry)
-        // console.log('Register Custom Command', entry, entryData)
-
         ctx.vm.registerTask(entry.name.value, (ctx2, entry2, entryData2, time) => {
-            // console.log('Run Custom Command', entry2, entryData2)
             if (!entryData2.meta.block) {
                 const block = ctx2.vm.createStack(entry.block.statements, undefined)
                 ctx2.vm.setData({ vm: ctx2.vm, stack: block }, 'args', entryData2.meta.args || [])
@@ -51,7 +47,6 @@ export const TaskDef = {
 
             const stack = ctx2.vm.stacks.get(entryData2.meta.block)
             const res = ctx2.vm.updateStack(stack, time, true)
-            // console.log('Execute CommandDef', res, stack.uid, stack.result)
             if (res.done) res.result = stack.result
             return res
         })

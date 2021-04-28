@@ -10,7 +10,6 @@ export const String = {
             const matches = expression.value.matchAll(regexpVars)
             const variables = new Set([...matches].map(x => x[1]))
             variables.forEach(x => {
-                // console.log('Try to replace', str, x, ctx.vm.getData(ctx, x), ctx.vm.hasData(ctx, x))
                 if (!ctx.vm.hasData(ctx, x)) return
                 str = str.replace(new RegExp((x === '$') ? `{[${x}]}` : `{${x}}`, 'g'), ctx.vm.getData(ctx, x))
             })
@@ -70,18 +69,12 @@ export const SymbolSub = {
         return { type: 'SymbolSub', value, property }
     },
     evaluate: (ctx, entry, resolve) => {
-        // console.log('Current SymbolSub', ctx, entry)
         const varPath = resolveVar(ctx, entry)
-        // console.log('var Path', varPath, 'in', ctx.stack.data)
         let current = ctx.vm.getData(ctx, varPath.shift())
-        // console.log('start with', current, varPath)
         for (let p of varPath) {
             if (!current) continue
-            // console.log(`access ${current}[${p}] -> ${current[p]}`)
             current = current[p]
-            
         }
-        // console.log('Return ', current)
         return current
     }
 }
@@ -116,5 +109,4 @@ function resolveVar (ctx, entry) {
     } else if (entry.type === 'Symbol') {
         return [ctx.vm.evaluate(ctx, entry.value)]
     }
-    // console.log('ResolveVar', entry)
 }

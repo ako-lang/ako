@@ -25,22 +25,34 @@ export const LoopFor = {
     create: (item, index, iterator, block) => {
         return { type: 'LoopFor', item, index, iterator, block } as LoopForData
     },
+    initialize: (ctx: Context, entry: LoopForData, entryData: any) => {
+        const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+        entryData.meta = {
+            itemVar: ctx.vm.evaluate(ctx, entry.item),
+            indexVar: ctx.vm.evaluate(ctx, entry.index),
+            iterator: ctx.vm.evaluate(ctx, entry.iterator, true),
+            index: 0,
+            block: block.uid
+        }
+
+        if (Array.isArray(entryData.meta.indexVar) && entryData.meta.indexVar.length === 0) {
+            entryData.meta.indexVar = undefined
+        }
+    },
+    next: (ctx: Context, entry: LoopForData, entryData: any, timeRemains: number) => {
+        if (timeRemains <= 0) return
+        if (entryData.meta.index >= entryData.meta.iterator.length) return
+
+        const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+        block.started = true
+        entryData.meta.block = block.uid
+        
+        if (entryData.meta.indexVar) ctx.vm.setData(ctx, entryData.meta.indexVar, entryData.meta.index)
+        ctx.vm.setData(ctx, entryData.meta.itemVar, entryData.meta.iterator[entryData.meta.index])
+    },
     execute: (ctx: Context, entry: LoopForData, entryData: any, timeRemains: number) => {
         // Initialize
-        if (!entryData.meta) {
-            const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
-            entryData.meta = {
-                itemVar: ctx.vm.evaluate(ctx, entry.item),
-                indexVar: ctx.vm.evaluate(ctx, entry.index),
-                iterator: ctx.vm.evaluate(ctx, entry.iterator, true),
-                index: 0,
-                block: block.uid
-            }
-            
-            if (Array.isArray(entryData.meta.indexVar) && entryData.meta.indexVar.length === 0) {
-                entryData.meta.indexVar = undefined
-            }
-        }
+        if (!entryData.meta) LoopFor.initialize(ctx, entry, entryData)
        
         // Iterate
         while (timeRemains > 0 && entryData.meta.index < entryData.meta.iterator.length) {
@@ -63,16 +75,7 @@ export const LoopFor = {
             // Prepare next loop
             if (stack.done) {
                 entryData.meta.index++
-
-                // Create a new stack only if we need to iterate more
-                if (timeRemains > 0 && entryData.meta.index < entryData.meta.iterator.length) {
-                    const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
-                    block.started = true
-                    entryData.meta.block = block.uid
-                    
-                    if (entryData.meta.indexVar) ctx.vm.setData(ctx, entryData.meta.indexVar, entryData.meta.index)
-                    ctx.vm.setData(ctx, entryData.meta.itemVar, entryData.meta.iterator[entryData.meta.index])
-                }
+                LoopFor.next(ctx, entry, entryData, timeRemains)
             }
         }
 

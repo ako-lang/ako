@@ -76,10 +76,7 @@ export function getGrammar () {
         //     console.log(e.sourceString)
         //     return AkoElement.Lambda.create(b.toAST(), e.toAST())
         // },
-        LambdaInline: (a, b, c, d, e) => {
-            // console.log(e.sourceString)
-            return AkoElement.Lambda.create(b.toAST(), e.toAST())
-        },
+        LambdaInline: (a, b, c, d, e) => AkoElement.Lambda.create(b.toAST(), e.toAST()),
         Continue: (a) => AkoElement.Continue.create(),
         Return: (a, b) => AkoElement.Return.create(b.toAST()),
         

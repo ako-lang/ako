@@ -92,10 +92,8 @@ export class Interpreter {
 
     getData (ctx: Context, key: string) {
         if (ctx.stack.parent && !['$', 'args'].includes(key)) {
-            // console.log('get data (parent)', key, ctx.vm.stacks.get(ctx.stack.parent).data[key])
             return ctx.vm.stacks.get(ctx.stack.parent).data[key]
         }
-        // console.log('get data (local)', key, ctx.stack.data[key])
         return ctx.stack.data[key]
     }
 
