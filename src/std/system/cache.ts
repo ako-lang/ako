@@ -1,4 +1,4 @@
-let cache = {}
+const cache = {}
 
 export default {
     'CacheReturn': (ctx, entry, entryData, timeRemains) => {

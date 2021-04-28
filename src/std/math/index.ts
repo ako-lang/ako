@@ -1,5 +1,5 @@
 export function precisionRound(num: number, precision = 14) {
-    var factor = Math.pow(10, precision)
+    const factor = Math.pow(10, precision)
     return Math.round(num * factor) / factor
 }
 

@@ -1,4 +1,5 @@
 dist
+typings
 test.ako
 node_modules
 coverage

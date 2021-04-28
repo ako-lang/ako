@@ -71,7 +71,7 @@ export const SymbolSub = {
     evaluate: (ctx, entry, resolve) => {
         const varPath = resolveVar(ctx, entry)
         let current = ctx.vm.getData(ctx, varPath.shift())
-        for (let p of varPath) {
+        for (const p of varPath) {
             if (!current) continue
             current = current[p]
         }

@@ -3,8 +3,9 @@ import { Interpreter } from '../interpreter'
 import fs from 'fs'
 import path from 'path'
 import { listAkoFiles } from '../helpers/folder'
+import { Stack } from '../core'
 
-function loadAkoModule(vm, projectFolder) {
+function loadAkoModule(vm: Interpreter, projectFolder: string) {
     const packagePath = path.join(projectFolder, 'module.json')
     if (!fs.existsSync(packagePath)) return
     const mod = JSON.parse(fs.readFileSync(packagePath, 'utf-8'))
@@ -20,7 +21,7 @@ function loadAkoModule(vm, projectFolder) {
 
     // load files
     const files = listAkoFiles(projectFolder)
-    for (let file of files) {
+    for (const file of files) {
         const fileId = file.replace('.ako', '')
         const codeTxt = fs.readFileSync(path.join(projectFolder, file), 'utf-8')
         const match = grammar.match(codeTxt.toString())
@@ -32,7 +33,7 @@ function loadAkoModule(vm, projectFolder) {
         if (vm.tasks.has(methodName)) {
             throw new Error(`Task Name Already Used : ${methodName}`)
         }
-        vm.registerTask(methodName, (ctx, fn, fnData, timeRemains) => {
+        vm.registerTask(methodName, (ctx, _, fnData, timeRemains) => {
             if (!fnData.meta.block) {
                 // console.log(`Create Stack ${methodName}`, fn, fnData)
                 const block = ctx.vm.createStack(ast, undefined)
@@ -40,8 +41,8 @@ function loadAkoModule(vm, projectFolder) {
                 fnData.meta.block = block.uid
             }
 
-            const stack = ctx.vm.stacks.get(fnData.meta.block)
-            const res: any = ctx.vm.updateStack(stack, timeRemains, true)
+            const stack = ctx.vm.stacks.get(fnData.meta.block) as Stack
+            const res = ctx.vm.updateStack(stack, timeRemains, true)
             if (res.done) res.result = stack.result
             return res
         })
@@ -49,7 +50,7 @@ function loadAkoModule(vm, projectFolder) {
 
     // execute entry point
     if (mod.entry) {
-        for (let file of mod.entry) {
+        for (const file of mod.entry) {
             const fileId = file.replace('.ako', '')
             const method = namespace ? `${namespace}.${fileId}` : fileId
             const match = grammar.match(`@${method}()`)
@@ -63,7 +64,7 @@ function loadAkoModule(vm, projectFolder) {
 // Get file content
 const args = process.argv.slice(2)
 let file = args.shift()
-if (!fs.existsSync(file)) throw new Error(`File does not exists : ${file}`)
+if (!file || !fs.existsSync(file)) throw new Error(`File does not exists : ${file}`)
 if (fs.lstatSync(file).isDirectory()) file = path.join(file, 'module.json')
 
 // Parse code to AST

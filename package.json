@@ -2,7 +2,8 @@
   "name": "ako-lang",
   "version": "0.0.6",
   "description": "",
-  "main": "./dist/web/ako-web.js",
+  "main": "./dist/node/ako.js",
+  "typings": "./lib/flavor/node.d.ts",
   "bin": "./dist/node/ako.js",
   "scripts": {
     "build": "run-s build:*",
@@ -11,12 +12,14 @@
     "build:web": "esbuild ./src/flavor/web.ts --bundle --target=es2020 --sourcemap --format=esm --outfile=dist/web/ako-web.js",
     "build:web-light": "esbuild ./src/flavor/web-light.ts --bundle --target=es2020 --sourcemap --format=esm --outfile=dist/web/ako-weblight.js",
     "build:post": "node ./tools/prepend.js",
+    "build:types": "tsc",
     "package": "run-s package:*",
     "package:win": "cd dist && nexe --input=./node/ako.js --output=./bin/ako.exe --target=win-12.12.0",
     "package:macos": "cd dist && nexe --input=./node/ako.js --output=./bin/ako-osx --target=darwin-12.12.0",
     "package:linux": "cd dist && nexe --input=./node/ako.js --output=./bin/ako-linux --target=linux-12.12.0",
     "test": "run-s test:*",
-    "test:jest": "jest --config jest.config.js"
+    "test:jest": "jest --config jest.config.js",
+    "test:lint": "eslint src/ --ext .js,.jsx,.ts,.tsx"
   },
   "author": "",
   "license": "MIT",
@@ -24,12 +27,16 @@
     "ohm-js": "^15.5.0"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.22",
+    "@types/jest": "^26.0.23",
     "@types/node": "^14.14.41",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
     "esbuild": "^0.11.15",
-    "esbuild-jest-transform": "^1.0.4",
+    "esbuild-jest-transform": "^1.0.7",
+    "eslint": "^7.25.0",
     "jest": "^26.6.3",
     "nexe": "^4.0.0-beta.18",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.2.4"
   }
 }
