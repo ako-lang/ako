@@ -75,6 +75,27 @@ import * as Ako from 'https://cdn.jsdelivr.net/npm/ako-lang@0.0.5/dist/web/ako-w
 
 ---
 
+## Contribute to Ako Development
+
+After cloning this repository
+
+### Getting started locally
+```bash
+npm install # install deps
+npm run build
+npm link # link the local file globally
+
+ako ./samples/ # use the interpreter
+```
+
+### Other
+```bash
+npm test # run unit tests
+npm run package # create the binaries (after build)
+```
+
+---
+
 ## How to write Ako scripts ?
 
 For that, please take a look at our [Documentation](https://ako-lang.github.io/ako/index.html#/./docs/grammar_basic)
