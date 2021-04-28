@@ -35,8 +35,7 @@ function loadAkoModule(vm: Interpreter, projectFolder: string) {
         }
         vm.registerTask(methodName, (ctx, _, fnData, timeRemains) => {
             if (!fnData.meta.block) {
-                // console.log(`Create Stack ${methodName}`, fn, fnData)
-                const block = ctx.vm.createStack(ast, undefined)
+                const block = ctx.vm.createStack(ast)
                 ctx.vm.setData({ vm: ctx.vm, stack: block }, 'args', fnData.meta.args || [])
                 fnData.meta.block = block.uid
             }
@@ -63,31 +62,31 @@ function loadAkoModule(vm: Interpreter, projectFolder: string) {
 
 // Get file content
 const args = process.argv.slice(2)
-let file = args.shift()
-if (!file || !fs.existsSync(file)) throw new Error(`File does not exists : ${file}`)
-if (fs.lstatSync(file).isDirectory()) file = path.join(file, 'module.json')
+let argFile = args.shift()
+if (!argFile || !fs.existsSync(argFile)) throw new Error(`File does not exists : ${argFile}`)
+if (fs.lstatSync(argFile).isDirectory()) argFile = path.join(argFile, 'module.json')
 
 // Parse code to AST
 const { grammar, ASTBuilder } = getGrammar()
-const vm = new Interpreter()
+const interpreter = new Interpreter()
 
 // Open a project
-const projectFolder = path.dirname(file)
-const modulePath = path.join(projectFolder, 'module.json')
+const folder = path.dirname(argFile)
+const modulePath = path.join(folder, 'module.json')
 if (fs.existsSync(modulePath)) {
-    loadAkoModule(vm, projectFolder)
+    loadAkoModule(interpreter, folder)
 } else {
-    const codeTxt = fs.readFileSync(path.resolve(file))
+    const codeTxt = fs.readFileSync(path.resolve(argFile))
     const match = grammar.match(codeTxt.toString())
-    if (!match) throw new Error(`Syntax Error with file ${file}`)
+    if (!match) throw new Error(`Syntax Error with file ${argFile}`)
     const ast = ASTBuilder(match).toAST()
-    vm.createStack(ast)
+    interpreter.createStack(ast)
 }
 
 let counter = 10000;
 (async () => {
-    while (vm.stacks.size > 0 && counter > 0) {
-        vm.update(16)
+    while (interpreter.stacks.size > 0 && counter > 0) {
+        interpreter.update(16)
         await new Promise((resolve) => setTimeout(resolve, 16))
         counter -= 16
     }
