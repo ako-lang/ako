@@ -15,7 +15,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm test
-      - run: npm coverage
+      - run: npm run coverage
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
