@@ -55,10 +55,11 @@ export function getGrammar(akoGrammar: string) {
 
     //
     Task: (a, b, c, d, e, f, g) => AkoElement.Task.create(b.toAST(), d.toAST(), f.toAST()),
-    TaskDef: (a, b, c) => AkoElement.TaskDef.create(b.toAST(), c.toAST()),
+    TaskDef: (a, b, c, d) => AkoElement.TaskDef.create(b.toAST(), c.toAST(), d.toAST()),
     Fn: (a, b, c, d, e, f) => AkoElement.Function.create(a.toAST(), c.toAST(), e.toAST()),
     Arguments: (a) => a.asIteration().toAST(),
     ListOf: (a) => a.asIteration().toAST(),
+    Metadata: (a, b, c) => AkoElement.Metadata.create(b.toAST(), c.toAST()),
 
     // Assign
     AssignTask: (a, _, c) => AkoElement.AssignTask.create('=', a.toAST(), c.toAST()),

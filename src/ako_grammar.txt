@@ -3,34 +3,34 @@ Ako {
 
   // Statement
   Block = "{" Stmt* "}"
-  Stmt = (Assign | AssignTask | TaskDef | Task | Param | If | ForLoop | Expr)
-  
+  Stmt = (Metadata | Assign | AssignTask | TaskDef | Task | If | ForLoop | Expr)
+
   Assign = AssignLeft | AssignAdd | AssignIncr | AssignDecr
   AssignTask = Var "=" Task
   AssignLeft = Var "=" Expr
   AssignAdd = Var "+=" Expr
   AssignIncr = Var "++"
   AssignDecr = Var "--"
-  Param = "param" Id "=" Term
-  
-  TaskDef = "task" Id Block
+  Metadata = "##" Id Term
+
+  TaskDef = "task" Id (Array)? Block
   Task = "@" (Id ".")? Id "(" Arguments ")"
   Arguments = ListOf<Expr, ",">
-  
+
   // Expression
   Expr =  LambdaInline | Fn | MathExpr | Term
   Term =Var | Number | String | bool | Array | Dictionary | Last
   Fn = (Id ".")? Id "(" Arguments ")"
   // Lambda = "(" ListOf<Id, ","> ")" "=>" Block
   LambdaInline = "(" ListOf<Id, ","> ")" "=>" Expr
-  
+
   // Math
   MathExpr = BinExpr
 
   BinExpr = BinExpr "and" EqExpr  -- and
     | BinExpr "or" EqExpr  -- or
     | EqExpr
-    
+
   EqExpr = EqExpr "==" AddExpr -- eq
     | EqExpr "!=" AddExpr   -- neq
     | EqExpr "<" AddExpr	-- lt
@@ -47,7 +47,7 @@ Ako {
     | MulExpr "/" PriExpr  -- divide
     | MulExpr "%" PriExpr  -- mod
     | PriExpr
-  
+
   PriExpr = "(" Expr ")"  -- paren
     | "+" PriExpr   -- pos
     | "-" PriExpr   -- neg
@@ -55,12 +55,12 @@ Ako {
     | Term "++"  -- inc
     | Term "Term"  -- dec
     | Term
-    
+
   // Conditionnal
   If = "if" Expr Block
      ("elif" Expr Block)*
      ("else" Block)?
-  
+
   // Loop
   ForLoop =  Foreach | While | Infinite | Continue | Return
   Foreach = "for" Id ("," Id)? ":=" Expr Block
@@ -68,7 +68,7 @@ Ako {
   Infinite = "for" Block
   Continue = "continue"
   Return = "return" Expr
-  
+
   // Identifier / Variable
   Last = "$"
   Var =  Var "[" Expr "]"    -- subscript
@@ -76,8 +76,8 @@ Ako {
               |  Var "." Id  -- select
               |  Id -- single
   Id  = ~(keyword) (letter alnum*)
-  keyword = "$" | "task" | "param" | "for" | "false" | "true" | "or" | "and" | "not" | "if" | "elif" | "else" | "continue" | "return" | "param"
-  
+  keyword = "$" | "task" | "for" | "false" | "true" | "or" | "and" | "not" | "if" | "elif" | "else" | "continue" | "return"
+
   // List
   Array       = "[" ListOf<Expr, ","> "]"
   Dictionary  = "{" ListOf<KeyValue, ","> "}"
@@ -85,7 +85,7 @@ Ako {
 
   // Boolean
   bool = "true" | "false"
-  
+
   // String
   String = sqString | dqString | emptyString
   squote = "'"
@@ -97,11 +97,11 @@ Ako {
   // Number
   Number  (a number literal)
     = hex | float | int
-    
+
   int    = digit+
   float  = digit+ "." digit+
   hex    = "#" hexDigit+
-    
+
   // Other
   space := "\t" | " " | "\n" | "\r" | comment | multilinecomment
   comment = "//" (~"\n" any)*

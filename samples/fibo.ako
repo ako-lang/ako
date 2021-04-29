@@ -1,4 +1,9 @@
-val = args[0]
+## Name "Fibonachi"
+## Desc "Compute the fibonachi sequence for a given value"
+## Args [
+  { name = "val", type = "int", default = 1, description = "" }
+]
+## Return "int"
 
 if val <= 0 { return 0 }
 elif val == 1 { return 1 }

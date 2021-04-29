@@ -1,2 +1,20 @@
+task testOld {
+  param = args[0]
+  @print("val {param}")
+}
+
+task test2 ["param"] {
+  @print("val {param}")
+}
+
+task test [ { name = "param", default = 1 } ] {
+  @print("val {param}")
+}
+
+
+@testOld(1)
+@test(2)
+@test2(3)
+
 @print("math")
 @Vec.main()
