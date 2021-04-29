@@ -1,51 +1,52 @@
+import assert from 'assert'
 import { runCode } from "./helper"
 
 describe('Math Expression', () => {
-    test('Add', () => {
+    it('Add', () => {
         const { stack } = runCode(`a = 42 + 2`)
-        expect((stack.data as any)['a']).toBe(44)
+        assert.strictEqual((stack.data as any)['a'], 44)
     })
 
-    test('Add Float', () => {
+    it('Add Float', () => {
         const { stack } = runCode(`a = 42 + 2.25`)
-        expect((stack.data as any)['a']).toBe(44.25)
+        assert.strictEqual((stack.data as any)['a'], 44.25)
     })
 
-    test('Add Negative', () => {
+    it('Add Negative', () => {
         const { stack } = runCode(`a = 42 + -2.25`)
-        expect((stack.data as any)['a']).toBe(39.75)
+        assert.strictEqual((stack.data as any)['a'], 39.75)
     })
 
-    test('Sub', () => {
+    it('Sub', () => {
         const { stack } = runCode(`a = 42 - 2`)
-        expect((stack.data as any)['a']).toBe(40)
+        assert.strictEqual((stack.data as any)['a'], 40)
     })
 
-    test('Multi', () => {
+    it('Multi', () => {
         const { stack } = runCode(`a = 42 * 2`)
-        expect((stack.data as any)['a']).toBe(84)
+        assert.strictEqual((stack.data as any)['a'], 84)
     })
 
-    test('Multi Float', () => {
+    it('Multi Float', () => {
         const { stack } = runCode(`a = 40.5 * 2`)
-        expect((stack.data as any)['a']).toBe(81)
+        assert.strictEqual((stack.data as any)['a'], 81)
     })
 
-    test('Multi Priority', () => {
+    it('Multi Priority', () => {
         const { stack: stack1 } = runCode(`a = 40 * 2 + 1`)
         const { stack: stack2 } = runCode(`a = 1 + 40 * 2`)
         const { stack: stack3 } = runCode(`a = (40 * 2) + 1`)
         const { stack: stack4 } = runCode(`a = (1 + 40) * 2`)
-        expect((stack1.data as any)['a']).toBe(81)
-        expect((stack2.data as any)['a']).toBe(81)
-        expect((stack3.data as any)['a']).toBe(81)
-        expect((stack4.data as any)['a']).toBe(82)
+        assert.strictEqual((stack1.data as any)['a'], 81)
+        assert.strictEqual((stack2.data as any)['a'], 81)
+        assert.strictEqual((stack3.data as any)['a'], 81)
+        assert.strictEqual((stack4.data as any)['a'], 82)
     })
 
-    test('Modulo', () => {
+    it('Modulo', () => {
         const { stack: stack1 } = runCode(`a = 40 % 3`)
         const { stack: stack2 } = runCode(`a = -2 % 3`)
-        expect((stack1.data as any)['a']).toBe(1)
-        expect((stack2.data as any)['a']).toBe(2)
+        assert.strictEqual((stack1.data as any)['a'], 1)
+        assert.strictEqual((stack2.data as any)['a'], 2)
     })
 })

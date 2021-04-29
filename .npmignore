@@ -2,6 +2,7 @@
 node_modules
 coverage
 docs
+samples
 public
 src
 tests
@@ -17,5 +18,3 @@ dist/**/*.js.map
 _sidebar.md
 logo.png
 index.html
-jest.config.js
-jest.esbuild.js

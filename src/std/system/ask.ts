@@ -1,7 +1,6 @@
-
 export default {
-    'ask': (ctx, fn, timeRemains) => {
-        /*
+  ask: (ctx, fn, timeRemains) => {
+    /*
         if (!fn.meta.started) {
             // console.log(fn.meta.args)
             const readline = require('readline')
@@ -26,6 +25,6 @@ export default {
         }
         if (fn.meta.completed) return { timeRemains, done: true }
         */
-        return { timeRemains: 0, done: false }
-    }
+    return {timeRemains: 0, done: false}
+  }
 }

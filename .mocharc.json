@@ -1,0 +1,5 @@
+{
+  "require": [
+    "esbuild-register/register"
+  ]
+}

@@ -3,6 +3,7 @@
 [![NPM Version](https://img.shields.io/npm/v/ako-lang.svg)](https://npmjs.org/package/ako-lang)
 [![NPM Download](https://img.shields.io/npm/dm/ako-lang.svg)](https://npmjs.org/package/ako-lang)
 [![CDN Download](https://data.jsdelivr.com/v1/package/npm/ako-lang/badge)](https://www.jsdelivr.com/package/npm/ako-lang)
+[![Coverage Status](https://coveralls.io/repos/github/ako-lang/ako/badge.svg?branch=develop)](https://coveralls.io/github/ako-lang/ako?branch=develop)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ako-lang_ako&metric=alert_status)](https://sonarcloud.io/dashboard?id=ako-lang_ako)
 [![Security](https://snyk.io/test/github/ako-lang/ako/badge.svg)](https://snyk.io/test/github/ako-lang/ako/)
 [![License](https://img.shields.io/npm/l/ako-lang.svg)](https://npmjs.org/package/ako-lang)
@@ -53,7 +54,7 @@ For those reasons, **Ako** tries to stay simple
 # Install Ako interpreter
 npm install -g ako-lang
 
-# Execute 
+# Execute
 ako ./test.ako
 ```
 
