@@ -1,3 +1,12 @@
+export const Metadata = {
+  create: (key: any, value: any) => {
+    return {type: 'Metadata', key: key.value ? key.value : key, value}
+  },
+  execute: (ctx, entry, entryData, timeRemains) => {
+    return {timeRemains, done: true}
+  }
+}
+
 export const AssignTask = {
   create: (operator, symbol, command) => {
     return {type: 'AssignTask', operator, symbol, command}
@@ -34,14 +43,24 @@ export const Task = {
 }
 
 export const TaskDef = {
-  create: (name, block) => {
-    return {type: 'TaskDef', name, block}
+  create: (name, args, block) => {
+    return {type: 'TaskDef', name, args: args[0] ? args[0].value : [], block}
   },
   execute: (ctx, entry, entryData, timeRemains) => {
     ctx.vm.registerTask(entry.name.value, (ctx2, entry2, entryData2, time) => {
       if (!entryData2.meta.block) {
-        const block = ctx2.vm.createStack(entry.block.statements, undefined)
+        const directArgs = entry.args.map((x) => ctx.vm.evaluate(ctx, x, true))
+        const argsMeta = entry.block.statements.filter((x) => x.type === 'Metadata' && x.key === 'Args')
+        const block = ctx2.vm.createStack(entry.block.statements)
         ctx2.vm.setData({vm: ctx2.vm, stack: block}, 'args', entryData2.meta.args || [])
+        if (directArgs || (argsMeta && argsMeta[0])) {
+          const val = ctx.vm.evaluate(ctx, directArgs || argsMeta[0].value, true)
+          for (let i = 0; i < val.length; i++) {
+            if (!val[i] || !val[i].name) continue
+            if (i < entryData2.meta.args.length) ctx2.vm.setData({vm: ctx2.vm, stack: block}, val[i].name, entryData2.meta.args[i])
+            else if ('default' in val[i]) ctx.vm.setData({vm: ctx2.vm, stack: block}, val[i].name, val[i].default)
+          }
+        }
         entryData2.meta.block = block.uid
       }
 

@@ -37,8 +37,17 @@ function loadAkoModule(vm: Interpreter, projectFolder: string) {
     }
     vm.registerTask(methodName, (ctx, _, fnData, timeRemains) => {
       if (!fnData.meta.block) {
+        const argsMeta = ast.filter((x) => x.type === 'Metadata' && x.key === 'Args')
         const block = ctx.vm.createStack(ast)
         ctx.vm.setData({vm: ctx.vm, stack: block}, 'args', fnData.meta.args || [])
+        if (argsMeta && argsMeta[0]) {
+          const val = ctx.vm.evaluate(ctx, argsMeta[0].value, true)
+          for (let i = 0; i < val.length; i++) {
+            if (!val[i] || !val[i].name) continue
+            if (i < fnData.meta.args.length) ctx.vm.setData({vm: ctx.vm, stack: block}, val[i].name, fnData.meta.args[i])
+            else if ('default' in val[i]) ctx.vm.setData({vm: ctx.vm, stack: block}, val[i].name, val[i].default)
+          }
+        }
         fnData.meta.block = block.uid
       }
 

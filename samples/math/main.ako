@@ -1,2 +1,8 @@
+task test [ { name = "param", default = 1 } ] {
+  @print("val {param}")
+}
+
+@test()
+@test(5)
 @print("math")
 @Vec.main()
