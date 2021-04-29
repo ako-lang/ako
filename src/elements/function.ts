@@ -56,9 +56,10 @@ export const TaskDef = {
         if (directArgs || (argsMeta && argsMeta[0])) {
           const val = ctx.vm.evaluate(ctx, directArgs || argsMeta[0].value, true)
           for (let i = 0; i < val.length; i++) {
-            if (!val[i] || !val[i].name) continue
-            if (i < entryData2.meta.args.length) ctx2.vm.setData({vm: ctx2.vm, stack: block}, val[i].name, entryData2.meta.args[i])
-            else if ('default' in val[i]) ctx.vm.setData({vm: ctx2.vm, stack: block}, val[i].name, val[i].default)
+            if (!val[i]) continue
+            const name = val[i].name || val[i]
+            if (i < entryData2.meta.args.length) ctx2.vm.setData({vm: ctx2.vm, stack: block}, name, entryData2.meta.args[i])
+            else if ('default' in val[i]) ctx.vm.setData({vm: ctx2.vm, stack: block}, name, val[i].default)
           }
         }
         entryData2.meta.block = block.uid

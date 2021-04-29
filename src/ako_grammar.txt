@@ -13,7 +13,7 @@ Ako {
   AssignDecr = Var "--"
   Metadata = "##" Id Term
 
-  TaskDef = "task" Id Array? Block
+  TaskDef = "task" Id (Array)? Block
   Task = "@" (Id ".")? Id "(" Arguments ")"
   Arguments = ListOf<Expr, ",">
 
@@ -76,7 +76,7 @@ Ako {
               |  Var "." Id  -- select
               |  Id -- single
   Id  = ~(keyword) (letter alnum*)
-  keyword = "$" | "task" | "param" | "for" | "false" | "true" | "or" | "and" | "not" | "if" | "elif" | "else" | "continue" | "return" | "param"
+  keyword = "$" | "task" | "for" | "false" | "true" | "or" | "and" | "not" | "if" | "elif" | "else" | "continue" | "return"
 
   // List
   Array       = "[" ListOf<Expr, ","> "]"
