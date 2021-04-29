@@ -8,6 +8,7 @@
   "scripts": {
     "build": "run-s build:*",
     "build:prepare": "prettier --write \"src/**/*.ts\"",
+    "build:prepare2": "prettier --write \"tests/**/*.ts\"",
     "build:cli": "esbuild ./src/flavor/cli.ts --bundle --platform=node --outfile=dist/node/ako.js",
     "build:node": "esbuild ./src/flavor/node.ts --bundle --platform=node --outfile=dist/node/node.js",
     "build:web": "esbuild ./src/flavor/web.ts --bundle --target=es2020 --sourcemap --format=esm --outfile=dist/web/ako-web.js",

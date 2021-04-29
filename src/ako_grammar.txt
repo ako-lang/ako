@@ -5,10 +5,11 @@ Ako {
   Block = "{" Stmt* "}"
   Stmt = (Metadata | Assign | AssignTask | TaskDef | Task | If | ForLoop | Expr)
 
-  Assign = AssignLeft | AssignAdd | AssignIncr | AssignDecr
+  Assign = AssignLeft | AssignAdd | AssignIncr | AssignDecr | AssignSub
   AssignTask = Var "=" Task
   AssignLeft = Var "=" Expr
   AssignAdd = Var "+=" Expr
+  AssignSub = Var "-=" Expr
   AssignIncr = Var "++"
   AssignDecr = Var "--"
   Metadata = "##" Id Term
@@ -49,11 +50,10 @@ Ako {
     | PriExpr
 
   PriExpr = "(" Expr ")"  -- paren
-    | "+" PriExpr   -- pos
     | "-" PriExpr   -- neg
     | "NOT" PriExpr   -- not
     | Term "++"  -- inc
-    | Term "Term"  -- dec
+    | Term "--"  -- dec
     | Term
 
   // Conditionnal

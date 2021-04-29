@@ -13,7 +13,8 @@ export function getGrammar(akoGrammar: string) {
       return parseFloat(this.sourceString)
     },
     hex: function (a, b) {
-      return parseInt(this.sourceString.substring(2), 16)
+      console.log(this.sourceString)
+      return Number(`0x${this.sourceString.slice(1)}`)
     }
   })
 
@@ -41,7 +42,7 @@ export function getGrammar(akoGrammar: string) {
     dqString: (a, b, c) => AkoElement.String.create(b.sourceString),
     emptyString: (a) => AkoElement.String.create(''),
     PriExpr_paren: (_, a, __) => a.toAST(),
-    PriExpr_pos: (_, a) => AkoElement.Number.create(+a.calc()),
+    // PriExpr_pos: (_, a) => AkoElement.Number.create(+a.calc()),
     PriExpr_neg: (_, a) => AkoElement.Number.create(-a.calc()),
 
     // Conditional
@@ -65,8 +66,9 @@ export function getGrammar(akoGrammar: string) {
     AssignTask: (a, _, c) => AkoElement.AssignTask.create('=', a.toAST(), c.toAST()),
     AssignLeft: (a, _, c) => AkoElement.Assign.create('=', a.toAST(), c.toAST()),
     AssignAdd: (a, _, c) => AkoElement.Assign.create('+=', a.toAST(), c.toAST()),
+    AssignSub: (a, _, c) => AkoElement.Assign.create('-=', a.toAST(), c.toAST()),
     AssignIncr: (a, _) => AkoElement.Assign.create('+=', a.toAST(), AkoElement.Number.create(1)),
-    AssignDecr: (a, _) => AkoElement.Assign.create('+=', a.toAST(), AkoElement.Number.create(-1)),
+    AssignDecr: (a, _) => AkoElement.Assign.create('-=', a.toAST(), AkoElement.Number.create(1)),
 
     // Loop
     Infinite: (a, b) => AkoElement.LoopInfinite.create(b.toAST()),

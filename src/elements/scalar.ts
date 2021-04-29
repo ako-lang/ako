@@ -90,6 +90,8 @@ export const Assign = {
       ctx.vm.setData(ctx, variable.value, value)
     } else if (entry.operator === '+=') {
       ctx.vm.setData(ctx, variable.value, ctx.vm.getData(ctx, variable.value) + value)
+    } else if (entry.operator === '-=') {
+      ctx.vm.setData(ctx, variable.value, ctx.vm.getData(ctx, variable.value) - value)
     }
     return {timeRemains: time, done: true}
   }
