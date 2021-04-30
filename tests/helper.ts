@@ -1,4 +1,4 @@
-import {toAst, Interpreter} from '../src/flavor/node'
+import {toAst, Interpreter} from '../src/dist/ako-node'
 
 export function runCode(code: string) {
   const ast = toAst(code)
