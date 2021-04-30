@@ -1,17 +1,17 @@
 # Standard folder
-node_modules
-coverage
-docs
-samples
-public
-src
-tests
-tools
-.github
+/node_modules/
+/coverage/
+/docs/
+/samples/
+/public/
+/src/
+/tests/
+/tools/
+.github/
 
 # Clean build
-dist/bin
-dist/**/*.js.map
+/dist/bin
+/dist/**/*.js.map
 
 # Clean individual files
 .nojekyll
