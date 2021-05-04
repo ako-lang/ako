@@ -1,3 +1,5 @@
+import {mapArgs} from '../helpers/args'
+
 export const Metadata = {
   create: (key: any, value: any) => {
     return {type: 'Metadata', key: key.value ? key.value : key, value}
@@ -32,7 +34,23 @@ export const Task = {
         const namespace = ctx.vm.evaluate(ctx, entry.namespace[0], true)
         fn = `${namespace}.${fn}`
       }
-      const args = entry.args.map((x) => ctx.vm.evaluate(ctx, x, true))
+      let i = -1
+      const args = entry.args.map((x) => {
+        if (x.type === 'KeyValue') {
+          return {
+            type: 'NamedArgs',
+            name: ctx.vm.evaluate(ctx, x.symbol, true),
+            value: ctx.vm.evaluate(ctx, x.value, true)
+          }
+        }
+        i = i + 1
+        return {
+          type: 'Args',
+          index: i,
+          value: ctx.vm.evaluate(ctx, x, true)
+        }
+      })
+      // console.log(args)
       entryData.meta = {fn, args}
     }
 
@@ -49,19 +67,12 @@ export const TaskDef = {
   execute: (ctx, entry, entryData, timeRemains) => {
     ctx.vm.registerTask(entry.name.value, (ctx2, entry2, entryData2, time) => {
       if (!entryData2.meta.block) {
-        const directArgs = entry.args.map((x) => ctx.vm.evaluate(ctx, x, true))
-        const argsMeta = entry.block.statements.filter((x) => x.type === 'Metadata' && x.key === 'Args')
+        const args = mapArgs(ctx, entry.args, entry.block.statements, entryData2.meta.args || [])
         const block = ctx2.vm.createStack(entry.block.statements)
-        ctx2.vm.setData({vm: ctx2.vm, stack: block}, 'args', entryData2.meta.args || [])
-        if (directArgs || (argsMeta && argsMeta[0])) {
-          const val = ctx.vm.evaluate(ctx, directArgs || argsMeta[0].value, true)
-          for (let i = 0; i < val.length; i++) {
-            if (!val[i]) continue
-            const name = val[i].name || val[i]
-            if (i < entryData2.meta.args.length) ctx2.vm.setData({vm: ctx2.vm, stack: block}, name, entryData2.meta.args[i])
-            else if ('default' in val[i]) ctx.vm.setData({vm: ctx2.vm, stack: block}, name, val[i].default)
-          }
+        for (const key in args) {
+          ctx2.vm.setData({vm: ctx2.vm, stack: block}, key, args[key])
         }
+        ctx2.vm.setData({vm: ctx2.vm, stack: block}, 'args', Object.values(args))
         entryData2.meta.block = block.uid
       }
 
@@ -84,11 +95,8 @@ export const Function = {
       const entries = entry.namespace.map((x) => ctx.vm.evaluate(ctx, x))
       fn = `${entries.join(',')}.${ctx.vm.evaluate(ctx, entry.name)}`
     }
-
     const args = entry.args.map((x) => ctx.vm.evaluate(ctx, x, true))
-
-    // console.log('Call function', fn, entry, args)
-    return ctx.vm.callFunction(fn, args)
+    return ctx.vm.callFunction(fn, ...args)
   }
 }
 

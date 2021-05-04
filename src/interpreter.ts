@@ -2,6 +2,7 @@ import {uid} from './helpers/id'
 import * as AkoElement from './elements'
 import {stdTasks, stdFunctions} from './std'
 import {Task, Context, Func, Stack, UpdateStackResult} from './core'
+import {mapArgs} from './helpers/args'
 
 export class Interpreter {
   stacks: Map<string, Stack> = new Map<string, Stack>()
@@ -35,6 +36,25 @@ export class Interpreter {
     return stack
   }
 
+  addFile(name: string, ast: any): void {
+    this.registerTask(name, (ctx, fn, fnData, timeRemains) => {
+      if (!fnData.meta.block) {
+        const args = mapArgs(ctx, [], ast, fnData.meta.args)
+        const block = ctx.vm.createStack(ast)
+        for (const key in args) {
+          ctx.vm.setData({vm: ctx.vm, stack: block}, key, args[key])
+        }
+        ctx.vm.setData({vm: ctx.vm, stack: block}, 'args', Object.values(args))
+        fnData.meta.block = block.uid
+      }
+
+      const stack = ctx.vm.stacks.get(fnData.meta.block) as Stack
+      const res = ctx.vm.updateStack(stack, timeRemains, true)
+      if (res.done) res.result = stack.result
+      return res
+    })
+  }
+
   registerFunction(name: string, method: Func): void {
     this.functions.set(name, method)
   }
@@ -62,6 +82,7 @@ export class Interpreter {
 
   evaluate(ctx: Context, expr, resolveSymbol = false): any {
     if (!expr || !expr.type) return expr
+    if (!AkoElement[expr.type].evaluate) throw new Error(`Cannot Evaluate ${expr.type}`)
     return AkoElement[expr.type].evaluate(ctx, expr, resolveSymbol)
   }
 

@@ -13,7 +13,6 @@ export function getGrammar(akoGrammar: string) {
       return parseFloat(this.sourceString)
     },
     hex: function (a, b) {
-      console.log(this.sourceString)
       return Number(`0x${this.sourceString.slice(1)}`)
     }
   })
