@@ -23,7 +23,7 @@ export const LoopWhile = {
 
 export const LoopFor = {
   create: (item, index, iterator, block) => {
-    return {type: 'LoopFor', item, index, iterator, block} as LoopForData
+    return {type: 'LoopFor', item, index: index.length > 0 ? index[0] : index, iterator, block} as LoopForData
   },
   initialize: (ctx: Context, entry: LoopForData, entryData: any) => {
     const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
@@ -66,6 +66,13 @@ export const LoopFor = {
         const res = ctx.vm.updateStack(stack, timeRemains, true)
         timeRemains = res.timeRemains
 
+        if ('continue' in stack && stack.continue) {
+          entryData.meta.index++
+          LoopFor.next(ctx, entry, entryData, timeRemains)
+          stack.continue = false
+          continue
+        }
+
         if (res.done && 'result' in stack) {
           ctx.vm.callReturn(ctx, stack.result)
           return {timeRemains, done: true}
@@ -95,6 +102,10 @@ export const Block = {
 export const Continue = {
   create: () => {
     return {type: 'Continue'}
+  },
+  execute: (ctx: Context, entry, entryData, timeRemains: number) => {
+    ctx.vm.callContinue(ctx)
+    return {timeRemains, done: true}
   }
 }
 
@@ -103,7 +114,7 @@ export const Return = {
     return {type: 'Return', expr}
   },
   execute: (ctx: Context, entry, entryData, timeRemains: number) => {
-    ctx.vm.callReturn(ctx, ctx.vm.evaluate(ctx, entry.expr, true))
+    ctx.vm.callReturn(ctx, ctx.vm.evaluate(ctx, entry.expr.length > 0 ? entry.expr[0] : entry.expr, true))
     return {timeRemains, done: true}
   }
 }
