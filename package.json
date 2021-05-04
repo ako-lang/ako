@@ -23,6 +23,7 @@
     "build:types:web-light": "node ./tools/gen-typings.js ako-weblight",
     "build:post": "node ./tools/prepend.js",
     "coverage": "nyc --reporter=text-lcov mocha ./tests/**.test.ts > coverage.lcov",
+    "coverage-user": "nyc mocha ./tests/**.test.ts",
     "package": "run-s package:*",
     "package:win": "cd dist && nexe --input=./ako-cli.js --output=./bin/ako.exe --target=win-12.12.0",
     "package:macos": "cd dist && nexe --input=./ako-cli.js --output=./bin/ako-osx --target=darwin-12.12.0",

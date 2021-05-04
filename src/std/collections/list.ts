@@ -1,18 +1,20 @@
 export const list = {
-  'List.filter': (args: [any[], (item: any, index: number) => any]) => {
-    const [arr, lambda] = args
+  'List.filter': (arr: number[], lambda: (item1: number, item2: number) => number): number[] => {
     return arr.filter(lambda)
   },
-  'List.map': (args: [any[], (item: any, index: number) => any]) => {
-    const [arr, lambda] = args
+  'List.map': (arr: number[], lambda: (item: number) => number): number[] => {
     return arr.map(lambda)
   },
-  'List.sort': (args: [any[], (item1: any, item2: any) => number]) => {
-    const [arr, lambda] = args
-    return lambda ? arr.sort(lambda) : arr.sort()
+  'List.sort': (arr: number[], lambda: (item1: number, item2: number) => number): number[] => {
+    return lambda
+      ? [...arr].sort(lambda)
+      : [...arr].sort((a, b) => {
+          if (a < b) return -1
+          if (a > b) return 1
+          return 0
+        })
   },
-  'List.reverse': (args: [any[]]) => {
-    const [arr] = args
-    return arr.reverse()
+  'List.reverse': (arr: number[]): number[] => {
+    return [...arr].reverse()
   }
 }

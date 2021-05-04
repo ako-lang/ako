@@ -15,7 +15,8 @@ Ako {
   Metadata = "##" Id Term
 
   TaskDef = "task" Id (Array)? Block
-  Task = "@" (Id ".")? Id "(" Arguments ")"
+  Task = "@" (Id ".")? Id "(" NamedArguments ")"
+  NamedArguments = ListOf<(KeyValue | Expr), ",">
   Arguments = ListOf<Expr, ",">
 
   // Expression

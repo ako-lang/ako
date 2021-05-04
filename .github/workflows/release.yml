@@ -32,5 +32,5 @@ jobs:
             dist/bin/ako.exe
             dist/bin/ako-linux
             dist/bin/ako-osx
-            dist/node/ako.js
-            dist/web/ako-web.js
+            dist/ako-node.js
+            dist/ako-web.js
