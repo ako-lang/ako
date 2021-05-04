@@ -7,7 +7,6 @@ export const If = {
     if (ctx.vm.evaluate(ctx, entry.ifCond, true)) {
       const block = ctx.vm.createStack(entry.ifBlock.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
       entryData.meta = {block: block.uid}
-      console.log('CREATE IFBLOCK', entryData.meta)
     }
 
     // else if
