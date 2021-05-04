@@ -1,14 +1,14 @@
 export const list = {
-  'List.filter': (arr: any[], lambda: (item1: any, item2: any) => number) => {
+  'List.filter': (arr: number[], lambda: (item1: number, item2: number) => number): number[] => {
     return arr.filter(lambda)
   },
-  'List.map': (arr: any[], lambda: (item1: any, item2: any) => number) => {
+  'List.map': (arr: number[], lambda: (item: number) => number): number[] => {
     return arr.map(lambda)
   },
-  'List.sort': (arr: any[], lambda: (item1: any, item2: any) => number) => {
+  'List.sort': (arr: number[], lambda: (item1: number, item2: number) => number): number[] => {
     return lambda ? [...arr].sort(lambda) : [...arr].sort()
   },
-  'List.reverse': (arr: any[]) => {
-    return arr.reverse()
+  'List.reverse': (arr: number[]): number[] => {
+    return [...arr].reverse()
   }
 }

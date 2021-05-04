@@ -45,7 +45,7 @@ task Method2 {
 }
 
 a = @Method(1, 2, 3)
-b = @Method(val2=2, val1=1, val3=3)
+b = @Method(val2=2, val1=1, val3 = 3)
 c = @Method2(1, 2)
 d = @Method2(val1=1, val3=3)
 `)

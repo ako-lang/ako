@@ -14,12 +14,14 @@ b = ""
 c = 'abc'
 d = ''
 e = "I don't want this string to be truncated !"
+f = "{a}def"
       `)
     assert.strictEqual((stack.data as any)['a'], 'abc')
     assert.strictEqual((stack.data as any)['b'], '')
     assert.strictEqual((stack.data as any)['c'], 'abc')
     assert.strictEqual((stack.data as any)['d'], '')
     assert.strictEqual((stack.data as any)['e'], "I don't want this string to be truncated !")
+    assert.strictEqual((stack.data as any)['f'], 'abcdef')
   })
 
   it('Assign boolean', () => {
