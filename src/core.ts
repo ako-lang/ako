@@ -15,6 +15,7 @@ export interface Stack {
   child: string | undefined
   elements: any[]
   elementsData: any[]
+  continue?: boolean
   result?: any
 }
 

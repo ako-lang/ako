@@ -7,6 +7,7 @@ export const If = {
     if (ctx.vm.evaluate(ctx, entry.ifCond, true)) {
       const block = ctx.vm.createStack(entry.ifBlock.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
       entryData.meta = {block: block.uid}
+      console.log('CREATE IFBLOCK', entryData.meta)
     }
 
     // else if
@@ -35,6 +36,7 @@ export const If = {
     const stack = ctx.vm.stacks.get(entryData.meta.block)
     const res = ctx.vm.updateStack(stack, timeRemains, true)
     if (res.done && 'result' in stack) ctx.vm.callReturn(ctx, stack.result)
+    if (res.done && 'continue' in stack) ctx.vm.callContinue(ctx)
     return res
   }
 }

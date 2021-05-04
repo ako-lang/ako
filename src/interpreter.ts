@@ -69,6 +69,11 @@ export class Interpreter {
     this.tasks.set(name, method)
   }
 
+  callContinue(ctx: Context): void {
+    ctx.stack.continue = true
+    ctx.stack.index = ctx.stack.elements.length
+  }
+
   callReturn(ctx: Context, val: any): void {
     ctx.stack.result = val
     ctx.stack.index = ctx.stack.elements.length

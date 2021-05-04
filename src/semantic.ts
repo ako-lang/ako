@@ -83,7 +83,7 @@ export function getGrammar(akoGrammar: string) {
     Return: (a, b) => AkoElement.Return.create(b.toAST()),
 
     // Var
-    Id: (a, b) => AkoElement.String.create(a.sourceString + b.sourceString),
+    id: (a) => AkoElement.String.create(a.sourceString),
     Var_single: (a) => AkoElement.Symbol.create(a.toAST()),
     Var_select: (a, b, c) => AkoElement.SymbolSelect.create(a.toAST(), c.toAST()),
     Var_range: (a, b, c, d, e, f) => AkoElement.SymbolRange.create(a.toAST(), c.toAST(), e.toAST()),
