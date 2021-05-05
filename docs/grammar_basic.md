@@ -1,9 +1,9 @@
-# Basic
+# How AKO works?
 
-The key element of Ako language is to represent algorithm as a succession of separated Commands.
+The key element of **Ako** is to represent algorithm as a succession of separated Commands
 
 And there is only a really limited set of possible Commands. The more commons are:
-* Assign a variable with: `=`
+* Assign an expression result to a variable with: `=`
 * Conditional with: `If`
 * Loop with: `For`
 * Execute a task with: `@`
@@ -26,8 +26,7 @@ fibo15 = @fibo(15)
 @print("Fibo(15) = {fibo15}")
 ```
 
----
-## Basic
+# Basic Types
 
 ### Variable
 
@@ -74,15 +73,4 @@ list = [1, 2, 3, 4]
 
 // Create dictionary
 pos = { x = 1, y = 2, z = 3 }
-```
-
-## Expression
-```js
-num = 2 + 1
-float = num * 1.5
-```
-
-### Expression using function
-```js
-num = Math.max(2 + 1, 2 * 2)
 ```

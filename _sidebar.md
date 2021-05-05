@@ -1,6 +1,7 @@
 * [Home](/)
 * [Grammar](./docs/grammar_basic.md)
     * [Basic](./docs/grammar_basic.md)
+    * [Expression](./docs/grammar_expression.md)
     * [Loop](./docs/grammar_loop.md)
     * [Task](./docs/grammar_task.md)
 * [Interpreter](./docs/interpreter_basic.md)
