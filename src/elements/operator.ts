@@ -1,5 +1,16 @@
 import {precisionRound} from '../std/math'
 
+export const Pipe = {
+  create: (expr1, expr2) => {
+    return {type: 'Pipe', expr1, expr2}
+  },
+  evaluate: (ctx, entry) => {
+    const val1 = ctx.vm.evaluate(ctx, entry.expr1, true)
+    ctx.vm.setData(ctx, '$', val1)
+    return ctx.vm.evaluate(ctx, entry.expr2, true)
+  }
+}
+
 export const Operator = {
   create: (operator, expr1, expr2) => {
     return {type: 'Operator', operator, expr1, expr2}

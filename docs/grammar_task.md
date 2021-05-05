@@ -7,6 +7,8 @@ A task is an operation that can take a certain amount of time to do things:
 * Playing animations
 * Waiting for user inputs
 
+In other language it's often known as `job` or `coroutine`.
+
 And in Ako scripts, they are called with a `@` in front
 
 ```js

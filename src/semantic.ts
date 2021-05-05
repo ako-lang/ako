@@ -59,6 +59,7 @@ export function getGrammar(akoGrammar: string) {
     Fn: (a, b, c, d, e, f) => AkoElement.Function.create(a.toAST(), c.toAST(), e.toAST()),
     Arguments: (a) => a.asIteration().toAST(),
     ListOf: (a) => a.asIteration().toAST(),
+    Pipe: (a, b, c) => AkoElement.Pipe.create(a.toAST(), c.toAST()),
     Metadata: (a, b, c) => AkoElement.Metadata.create(b.toAST(), c.toAST()),
 
     // Assign
