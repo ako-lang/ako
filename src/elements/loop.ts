@@ -40,7 +40,6 @@ export const LoopWhile = {
       cond: ctx.vm.evaluate(ctx, entry.cond, true)
     }
 
-    console.log('WHILE LOOP', entryData.meta.cond)
     if (!entryData.meta.cond) return
     const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
     entryData.meta.block = block.uid
@@ -49,7 +48,6 @@ export const LoopWhile = {
     if (timeRemains <= 0) return
 
     entryData.meta.cond = ctx.vm.evaluate(ctx, entry.cond, true)
-    console.log('WHILE LOOP', entryData.meta.cond)
     if (!entryData.meta.cond) return
     const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
     entryData.meta.block = block.uid

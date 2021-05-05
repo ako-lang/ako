@@ -46,7 +46,7 @@ function loadAkoModule(vm: Interpreter, projectFolder: string) {
       const method = namespace ? `${namespace}.${fileId}` : fileId
       const match = grammar.match(`@${method}()`)
       const ast = ASTBuilder(match).toAST()
-      console.log('Create Stack >', fileId)
+      // console.log('Create Stack >', fileId)
       vm.createStack(ast)
     }
   }
