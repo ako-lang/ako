@@ -57,10 +57,13 @@ export const LoopWhile = {
     if (!entryData.meta) LoopWhile.initialize(ctx, entry, entryData)
 
     // Iterate
-    while (timeRemains > 0 && entryData.meta.cond) {
+    while (timeRemains > 0 && !!entryData.meta.cond) {
       const stack = ctx.vm.stacks.get(entryData.meta.block)
 
-      if (!stack.done) {
+      // Prepare next loop
+      if (!stack || stack.done) LoopWhile.next(ctx, entry, entryData, timeRemains)
+
+      if (stack && !stack.done) {
         const res = ctx.vm.updateStack(stack, timeRemains, true)
         timeRemains = res.timeRemains
 
@@ -72,12 +75,10 @@ export const LoopWhile = {
 
         if (res.done && 'result' in stack) {
           ctx.vm.callReturn(ctx, stack.result)
+          entryData.meta.cond = false
           return {timeRemains, done: true}
         }
       }
-
-      // Prepare next loop
-      if (stack.done) LoopWhile.next(ctx, entry, entryData, timeRemains)
     }
 
     return {timeRemains, done: !entryData.meta.cond}

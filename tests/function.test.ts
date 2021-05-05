@@ -2,6 +2,14 @@ import assert from 'assert'
 import {runCode} from './helper'
 
 describe('Function', function () {
+  it('Unexisting Function', () => {
+    assert.throws(() => {
+      runCode(`
+a = unknown(1,2,3,4,5)
+    `)
+    })
+  })
+
   it('Check Expression Function', () => {
     const {stack} = runCode(`
 a = Math.max(1,2,3,4,5)

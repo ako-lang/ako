@@ -86,4 +86,18 @@ for {
     `)
     assert.strictEqual((stack.data as any)['counter'], 10)
   })
+
+  it('Infinite Loop with delay', () => {
+    const {vm, stack} = runCode(`
+counter = 0
+for {
+  @print("{counter}")
+  counter += 1
+  if counter >= 10 { return }
+  @sleep(1)
+}
+    `)
+    vm.update(16)
+    assert.strictEqual((stack.data as any)['counter'], 10)
+  })
 })
