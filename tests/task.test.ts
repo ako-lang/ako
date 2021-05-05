@@ -2,6 +2,14 @@ import assert from 'assert'
 import {runCode, runFileCode} from './helper'
 
 describe('Task', () => {
+  it('Unexisting Task', () => {
+    assert.throws(() => {
+      runCode(`
+a = @unknown(1,2,3,4,5)
+    `)
+    })
+  })
+
   it('Create and run task', () => {
     const {stack} = runCode(`
 task Method1 {

@@ -64,7 +64,7 @@ Ako {
 
   // Loop
   ForLoop =  Foreach | While | Infinite | Continue | Return
-  Foreach = "for" id ("," id)? ":=" Expr Block
+  Foreach = "for" id ("," id)? "in" Expr Block
   While = "for" Expr Block
   Infinite = "for" Block
   Continue = "continue"
