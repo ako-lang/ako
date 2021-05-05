@@ -45,3 +45,18 @@ c = Vec2.sub(Vec2.scale(a, 5), Vec2.create(5, 5))
     assert.deepStrictEqual((stack.data as any)['c'], [0, 0])
   })
 })
+
+describe('Pipe', function () {
+  it('Check Pipe Behavior', () => {
+    const {stack} = runCode(`
+b = List.sort(List.map(List.filter([1,2,4,5,6], (val) => val < 5), (val) => 10 / val))
+
+a = [1,2,4,5,6]
+|> List.filter($, (val) => val < 5)
+|> List.map($, (val) => 10 / val)
+|> List.sort($)
+    `)
+    assert.deepStrictEqual((stack.data as any)['b'], [10/4, 10/2, 10])
+    assert.deepStrictEqual((stack.data as any)['a'], [10/4, 10/2, 10])
+  })
+})

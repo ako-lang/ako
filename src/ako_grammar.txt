@@ -20,8 +20,11 @@ Ako {
   Arguments = ListOf<Expr, ",">
 
   // Expression
-  Expr =  LambdaInline | Fn | MathExpr | Term
-  Term =Var | Number | String | bool | Array | Dictionary | Last
+  Pipe = (Pipe | ExprItem) "|>" ExprItem
+  Expr =  Pipe | ExprItem
+  ExprItem = LambdaInline | Fn | MathExpr | Term
+
+  Term = Var | Number | String | bool | Array | Dictionary | Last
   Fn = (id ".")? id "(" Arguments ")"
   // Lambda = "(" ListOf<id, ","> ")" "=>" Block
   LambdaInline = "(" ListOf<id, ","> ")" "=>" Expr
