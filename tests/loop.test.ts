@@ -86,19 +86,4 @@ for {
     `)
     assert.strictEqual((stack.data as any)['counter'], 10)
   })
-
-  // TODO: Implement Infinite loop
-  /*
-  it('Check Index', () => {
-    const {stack} = runCode(`
-b = 0
-for val, index in [1,2,3,4,5,6,7,8] {
-  @print("this is {val} {index}")
-  if index > 1 { return 0 }
-  b += val
-}
-    `)
-    assert.strictEqual((stack.data as any)['b'], 3)
-  })
-  */
 })
