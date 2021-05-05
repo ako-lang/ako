@@ -1,4 +1,11 @@
 import {Context} from '../core'
+import {Number} from './scalar'
+
+export interface LoopWhileData {
+  type: string
+  cond: any
+  block: any
+}
 
 export interface LoopForData {
   type: string
@@ -12,12 +19,70 @@ export interface LoopForData {
 export const LoopInfinite = {
   create: (block) => {
     return {type: 'LoopInfinite', block}
+  },
+  initialize: (ctx: Context, entry: LoopWhileData, entryData: any) => {
+    entry.cond = Number.create(1)
+  },
+  execute: (ctx: Context, entry: LoopWhileData, entryData: any, timeRemains: number) => {
+    // Initialize
+    if (!entryData.meta) LoopInfinite.initialize(ctx, entry, entryData)
+    return LoopWhile.execute(ctx, entry, entryData, timeRemains)
   }
 }
 
 export const LoopWhile = {
   create: (cond, block) => {
     return {type: 'LoopWhile', cond, block}
+  },
+  initialize: (ctx: Context, entry: LoopWhileData, entryData: any) => {
+    entryData.meta = {
+      block: 0,
+      cond: ctx.vm.evaluate(ctx, entry.cond, true)
+    }
+
+    console.log('WHILE LOOP', entryData.meta.cond)
+    if (!entryData.meta.cond) return
+    const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+    entryData.meta.block = block.uid
+  },
+  next: (ctx: Context, entry: LoopWhileData, entryData: any, timeRemains: number) => {
+    if (timeRemains <= 0) return
+
+    entryData.meta.cond = ctx.vm.evaluate(ctx, entry.cond, true)
+    console.log('WHILE LOOP', entryData.meta.cond)
+    if (!entryData.meta.cond) return
+    const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+    entryData.meta.block = block.uid
+  },
+  execute: (ctx: Context, entry: LoopWhileData, entryData: any, timeRemains: number) => {
+    // Initialize
+    if (!entryData.meta) LoopWhile.initialize(ctx, entry, entryData)
+
+    // Iterate
+    while (timeRemains > 0 && entryData.meta.cond) {
+      const stack = ctx.vm.stacks.get(entryData.meta.block)
+
+      if (!stack.done) {
+        const res = ctx.vm.updateStack(stack, timeRemains, true)
+        timeRemains = res.timeRemains
+
+        if ('continue' in stack && stack.continue) {
+          LoopWhile.next(ctx, entry, entryData, timeRemains)
+          stack.continue = false
+          continue
+        }
+
+        if (res.done && 'result' in stack) {
+          ctx.vm.callReturn(ctx, stack.result)
+          return {timeRemains, done: true}
+        }
+      }
+
+      // Prepare next loop
+      if (stack.done) LoopWhile.next(ctx, entry, entryData, timeRemains)
+    }
+
+    return {timeRemains, done: !entryData.meta.cond}
   }
 }
 
@@ -86,10 +151,7 @@ export const LoopFor = {
       }
     }
 
-    return {
-      timeRemains,
-      done: entryData.meta.index >= entryData.meta.iterator.length
-    }
+    return {timeRemains, done: entryData.meta.index >= entryData.meta.iterator.length}
   }
 }
 
