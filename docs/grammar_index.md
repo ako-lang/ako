@@ -8,7 +8,18 @@ And there is only a really limited set of possible Commands. The more commons ar
 * Loop with: `For`
 * Execute a task with: `@`
 
-### Sample (fibonachi sequence)
+## Design decision
+
+For those reasons, **Ako** tries to stay simple
+* Built around expressions (think about excel formula)
+* Simple scope design, 1file = 1task = 1scope
+* Sequential execution (no callback or async/await)
+* No class or OOP (no `this`, `self` or `object` scope)
+* Only one loop `For` (no while, foreach, ...)
+* No switch, goto, try/catch, ...
+* The code should be modular and easy to share and reuse
+
+## Sample (fibonachi sequence)
 
 ```js
 // We create a task to compute fibo

@@ -20,8 +20,6 @@ It's a simple scripting language designed to be embedded in application or webAp
 
 ---
 
-## Sample
-
 Here is a sample that compute [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number) in a recursive (and inefficient) way
 ```js
 // We create a task to compute fibo
@@ -42,43 +40,7 @@ result = @fibo(val)
 @print("Result of Fibo({val}) = {result}")
 ```
 
----
-
-## Getting Started
-
-### From NPM
-
-```sh
-# Install Ako interpreter
-npm install -g ako-lang
-
-# Execute
-ako ./test.ako
-```
-
-### Standalone Executable
-
-You can directly use standalone executable of the interpreter : [Release page](https://github.com/ako-lang/ako/releases)
-
-It's compiled for **Windows**, **Mac** and **Linux** and once downloaded, you can use it to run Ako scripts
-```sh
-./ako.exe test.ako
-```
-
-### CDN
-
-For web usage, you can load the library directly with ESM imports
-```js
-import * as Ako from 'https://cdn.jsdelivr.net/npm/ako-lang@0.0.5/dist/web/ako-web.js'
-```
-
-### How to write Ako scripts ?
-
-For that, please take a look at our [Documentation](https://ako-lang.github.io/ako/index.html#/./docs/grammar_basic)
-
----
-
-## Problem & Goals
+# Problem & Goals
 
 Most [No-code or Low-code](https://en.wikipedia.org/wiki/Low-code_development_platform) existing solution have big limitations:
 * Bloaty and complicated
@@ -91,24 +53,45 @@ Ako tries to fill the gap by providing at the same time:
 * A programming language for more advanced users but easy to learn
 * An interpreter designed to run almost anywhere
 
-## Design decision
 
-For those reasons, **Ako** tries to stay simple
-* Built around expressions (think about excel formula)
-* Simple scope design, 1file = 1task = 1scope
-* Sequential execution (no callback or async/await)
-* No class or OOP (no `this`, `self` or `object` scope)
-* Only one loop `For` (no while, foreach, ...)
-* No switch, goto, try/catch, ...
-* The code should be modular and easy to share and reuse
+# Getting Started
 
----
+## From NPM
 
-## Contribute to Ako Development
+```sh
+# Install Ako interpreter
+npm install -g ako-lang
+
+# Execute
+ako ./test.ako
+```
+
+## Standalone Executable
+
+You can directly use standalone executable of the interpreter : [Release page](https://github.com/ako-lang/ako/releases)
+
+It's compiled for **Windows**, **Mac** and **Linux** and once downloaded, you can use it to run Ako scripts
+```sh
+./ako.exe test.ako
+```
+
+## CDN
+
+For web usage, you can load the library directly with ESM imports
+```js
+import * as Ako from 'https://cdn.jsdelivr.net/npm/ako-lang@0.0.5/dist/web/ako-web.js'
+```
+
+## How to write Ako scripts ?
+
+For that, please take a look at our [Documentation](https://ako-lang.github.io/ako/index.html#/./docs/grammar_basic)
+
+
+# Ako Development
 
 After cloning this repository
 
-### Getting started locally
+## Getting started locally
 ```bash
 npm install # install deps
 npm run build
@@ -117,7 +100,7 @@ npm link # link the local file globally
 ako ./samples/ # use the interpreter
 ```
 
-### Other
+## Other
 ```bash
 npm test # run unit tests
 npm run package # create the binaries (after build)
