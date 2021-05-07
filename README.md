@@ -22,7 +22,7 @@ It's a simple scripting language designed to be embedded in application or webAp
 
 ## Sample
 
-Here is a sample that compute [Fibonacchi sequence](https://en.wikipedia.org/wiki/Fibonacci_number) in a recursive (and inneficient) way
+Here is a sample that compute [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number) in a recursive (and inefficient) way
 ```js
 // We create a task to compute fibo
 task fibo ["val"] {
