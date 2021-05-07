@@ -39,21 +39,3 @@ a = [1,2,4,5,6]
   |> List.map($, (val) => 10 / val)
   |> List.sort($)
 ```
-
-# Equality Expression
-```js
-a = true
-b = a * 2 >= 12
-```
-
-List of mathematical support
-* `==` : Equal
-* `!=` : Different
-* `<` : Less than
-* `<=` : Less or equal than
-* `>` : More than
-* `>=` : More or equal than
-
-And they can be combined logic operator
-* `and`
-* `or`

@@ -76,8 +76,7 @@ if param <= 0 {
 Task can be stored directly in a file, the task will be registered only when the script run for the first time, and can be called only from inside this file.
 
 ```js
-task hello {
-    param = args[0]
+task hello ["param"] {
     @print("Hello {param} !")
 }
 

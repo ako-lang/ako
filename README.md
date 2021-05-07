@@ -20,29 +20,27 @@ It's a simple scripting language designed to be embedded in application or webAp
 
 ---
 
-## Problem & Goals
+## Sample
 
-Most [No-code or Low-code](https://en.wikipedia.org/wiki/Low-code_development_platform) existing solution have big limitations:
-* Bloaty and complicated
-* closed source, so it can be hard to contribute or add custom logic
-* their own UI that can be really frustrating for more advanced user (like blockly)
-* the code is usually stored in a proprietary text format (JSON, YAML or XML) and is not portable or reusable
+Here is a sample that compute [Fibonacchi sequence](https://en.wikipedia.org/wiki/Fibonacci_number) in a recursive (and inneficient) way
+```js
+// We create a task to compute fibo
+task fibo ["val"] {
+    if val <= 0 { return 0 }
+    elif val == 1 { return 1 }
 
-Ako tries to fill the gap by providing at the same time:
-* A visual programming interface for beginners
-* A programming language for more advanced users but easy to learn
-* An interpreter designed to run almost anywhere
+    prev1 = @fibo(val - 1)
+    prev2 = @fibo(val - 2)
+    return prev1 + prev2
+}
 
-## Design decision
+// We can do some math
+val = Math.max(12 + 3, 0)
 
-For those reasons, **Ako** tries to stay simple
-* Built around expressions (think about excel formula)
-* Simple scope design, 1file = 1task = 1scope
-* Sequential execution (no callback or async/await)
-* No class or OOP (no `this`, `self` or `object` scope)
-* Only one loop `For` (no while, foreach, ...)
-* No switch, goto, try/catch, ...
-* The code should be modular and easy to share and reuse
+// We call our task and print the result
+result = @fibo(val)
+@print("Result of Fibo({val}) = {result}")
+```
 
 ---
 
@@ -74,6 +72,36 @@ For web usage, you can load the library directly with ESM imports
 import * as Ako from 'https://cdn.jsdelivr.net/npm/ako-lang@0.0.5/dist/web/ako-web.js'
 ```
 
+### How to write Ako scripts ?
+
+For that, please take a look at our [Documentation](https://ako-lang.github.io/ako/index.html#/./docs/grammar_basic)
+
+---
+
+## Problem & Goals
+
+Most [No-code or Low-code](https://en.wikipedia.org/wiki/Low-code_development_platform) existing solution have big limitations:
+* Bloaty and complicated
+* closed source, so it can be hard to contribute or add custom logic
+* their own UI that can be really frustrating for more advanced user (like blockly)
+* the code is usually stored in a proprietary text format (JSON, YAML or XML) and is not portable or reusable
+
+Ako tries to fill the gap by providing at the same time:
+* A [visual programming interface](https://github.com/ako-lang/ako-editor) for beginners
+* A programming language for more advanced users but easy to learn
+* An interpreter designed to run almost anywhere
+
+## Design decision
+
+For those reasons, **Ako** tries to stay simple
+* Built around expressions (think about excel formula)
+* Simple scope design, 1file = 1task = 1scope
+* Sequential execution (no callback or async/await)
+* No class or OOP (no `this`, `self` or `object` scope)
+* Only one loop `For` (no while, foreach, ...)
+* No switch, goto, try/catch, ...
+* The code should be modular and easy to share and reuse
+
 ---
 
 ## Contribute to Ako Development
@@ -94,9 +122,3 @@ ako ./samples/ # use the interpreter
 npm test # run unit tests
 npm run package # create the binaries (after build)
 ```
-
----
-
-## How to write Ako scripts ?
-
-For that, please take a look at our [Documentation](https://ako-lang.github.io/ako/index.html#/./docs/grammar_basic)
