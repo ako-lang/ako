@@ -82,3 +82,26 @@ task hello ["param"] {
 
 @hello("World")
 ```
+
+## Non blocking Task
+By default, calling a task `@taskName()` will wait for the task to finish and return the result
+
+But if needed, its also possible to start a task without blocking execution `@@taskName()`
+
+So `@` blocking execution, `@@` non blocking execution
+
+```js
+task DelayMessage ["delay", "message"] {
+  @sleep(delay)
+  @print(message)
+}
+
+// start 3 task that will run in parallel
+@@DelayMessage(1, "3 !")
+job1 = @@DelayMessage(2, "2 !") // its possible to store a task reference
+job2 = @@DelayMessage(3, "1 !")
+
+@print("Start !") // nothing stop the execution before so it will be executed immediately
+@waitTasks([job1, job2]) // sleep here until one or multiple task are completed
+@print("ZERO !")
+```

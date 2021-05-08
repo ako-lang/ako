@@ -62,7 +62,10 @@ export const Task = {
   execute: (ctx, entry, entryData, timeRemains) => {
     if (entry.skip) {
       entry.args = evalArgs(ctx, entry.args)
-      const stack = ctx.vm.createStack([{...entry, skip: false}], true)
+      const stack = ctx.vm.createStack([{...entry, skip: false}], {
+        autoupdate: true,
+        priority: 1
+      })
       ctx.vm.updateStack(stack, timeRemains, true)
       return {
         timeRemains,
@@ -98,7 +101,9 @@ export const TaskDef = {
     ctx.vm.registerTask(entry.name.value, (ctx2, entry2, entryData2, time) => {
       if (!entryData2.meta.block) {
         const args = mapArgs(ctx, entry.args, entry.block.statements, entryData2.meta.args || [])
-        const block = ctx2.vm.createStack(entry.block.statements, false)
+        const block = ctx2.vm.createStack(entry.block.statements, {
+          autoupdate: false
+        })
         for (const key in args) {
           ctx2.vm.setData({vm: ctx2.vm, stack: block}, key, args[key])
         }

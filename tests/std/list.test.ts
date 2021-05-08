@@ -29,7 +29,6 @@ rev = List.reverse(List.sort(list))
     `)
     assert.deepStrictEqual((stack.data as any)['list'], [1, 5, 2, 3, 4, 1])
     assert.deepStrictEqual((stack.data as any)['rev'], [5, 4, 3, 2, 1, 1])
-
   })
 
   it('Map', () => {

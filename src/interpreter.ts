@@ -1,8 +1,14 @@
 import {uid} from './helpers/id'
 import * as AkoElement from './elements'
 import {stdTasks, stdFunctions} from './std'
-import {Task, Context, Func, Stack, UpdateStackResult} from './core'
+import {Task, Context, Func, Stack, UpdateStackResult, IStackOption} from './core'
 import {mapArgs} from './helpers/args'
+
+const stackOptionDefault: IStackOption = {
+  autoupdate: true,
+  parent: undefined,
+  priority: 10
+}
 
 export class Interpreter {
   stacks: Map<string, Stack> = new Map<string, Stack>()
@@ -14,16 +20,18 @@ export class Interpreter {
     Object.keys(stdTasks).forEach((name) => this.registerTask(name, stdTasks[name]))
   }
 
-  createStack(elements, autoupdate = true, parent?: string): Stack {
+  createStack(elements, options?: Partial<IStackOption>): Stack {
+    const opt = Object.assign({}, stackOptionDefault, options) as IStackOption
     const stack: Stack = {
       data: {},
       uid: uid(),
+      priority: opt.priority,
       index: 0,
       elapsed: 0,
       started: false,
       done: false,
-      parent,
-      autoupdate,
+      parent: opt.parent,
+      autoupdate: opt.autoupdate,
       child: undefined,
       elements,
       elementsData: elements.map((x) => {
@@ -41,7 +49,7 @@ export class Interpreter {
     this.registerTask(name, (ctx, fn, fnData, timeRemains) => {
       if (!fnData.meta.block) {
         const args = mapArgs(ctx, [], ast, fnData.meta.args)
-        const block = ctx.vm.createStack(ast, false)
+        const block = ctx.vm.createStack(ast, {autoupdate: false})
         for (const key in args) {
           ctx.vm.setData({vm: ctx.vm, stack: block}, key, args[key])
         }
@@ -113,7 +121,9 @@ export class Interpreter {
   }
 
   update(timeRemains: number): void {
-    for (const entry of [...this.stacks.values()]) {
+    const stacks = [...this.stacks.values()]
+    stacks.sort((a, b) => a.priority - b.priority)
+    for (const entry of stacks) {
       if (!entry.autoupdate) continue
       this.updateStack(entry, timeRemains)
     }

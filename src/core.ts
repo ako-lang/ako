@@ -4,9 +4,16 @@ export type Func = (...args: any) => any
 
 export type Task = (ctx: Context, fn: any, fnData: any, time: number) => UpdateStackResult
 
+export interface IStackOption {
+  autoupdate: boolean
+  parent?: string
+  priority: number
+}
+
 export interface Stack {
   data: any
   uid: string
+  priority: number
   index: number
   elapsed: number
   started: boolean

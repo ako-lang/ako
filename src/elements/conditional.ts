@@ -5,7 +5,10 @@ export const If = {
   initialize: (ctx, entry, entryData) => {
     // if
     if (ctx.vm.evaluate(ctx, entry.ifCond, true)) {
-      const block = ctx.vm.createStack(entry.ifBlock.statements, false, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+      const block = ctx.vm.createStack(entry.ifBlock.statements, {
+        autoupdate: false,
+        parent: ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid
+      })
       entryData.meta = {block: block.uid}
     }
 
@@ -13,7 +16,10 @@ export const If = {
     if (!entryData.meta) {
       for (let i = 0; i < entry.elifCond.length; i++) {
         if (ctx.vm.evaluate(ctx, entry.elifCond[i], true)) {
-          const block = ctx.vm.createStack(entry.elifBlock[i].statements, false, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+          const block = ctx.vm.createStack(entry.elifBlock[i].statements, {
+            autoupdate: false,
+            parent: ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid
+          })
           entryData.meta = {block: block.uid}
           break
         }
@@ -22,7 +28,10 @@ export const If = {
 
     // else
     if (!entryData.meta && entry.elseBlock[0]) {
-      const block = ctx.vm.createStack(entry.elseBlock[0].statements, false, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+      const block = ctx.vm.createStack(entry.elseBlock[0].statements, {
+        autoupdate: false,
+        parent: ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid
+      })
       entryData.meta = {block: block.uid}
     }
   },
