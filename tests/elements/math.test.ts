@@ -1,5 +1,5 @@
 import assert from 'assert'
-import {runCode} from './helper'
+import {runCode} from '../helper'
 
 describe('Scalar', () => {
   it('Hexa', () => {

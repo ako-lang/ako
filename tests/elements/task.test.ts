@@ -1,5 +1,5 @@
 import assert from 'assert'
-import {runCode, runFileCode} from './helper'
+import {runCode, runFileCode} from '../helper'
 
 describe('Task', () => {
   it('Unexisting Task', () => {
