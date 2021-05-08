@@ -129,7 +129,7 @@ for a in [1,2,5] {
 @print("Task : {list}")
 a = @mem_get('counter')
 @waitTasks(list)
-
+b = @mem_get('counter')
     `,
       vm
     )
@@ -138,8 +138,6 @@ a = @mem_get('counter')
     vm.update(2)
     vm.update(2)
     assert.strictEqual((stack2.data as any)['b'], 3)
-    console.log(stack2.data)
-    // assert.strictEqual((stack2.data as any)['a'], 1)
   })
 
   it('Skip Task 2', () => {
@@ -169,7 +167,5 @@ b = @mem_get('counter')
     vm.update(2)
     vm.update(2)
     assert.strictEqual((stack.data as any)['b'], 3)
-    console.log(stack.data)
-    // assert.strictEqual((stack2.data as any)['a'], 1)
   })
 })
