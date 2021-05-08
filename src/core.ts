@@ -12,6 +12,7 @@ export interface Stack {
   started: boolean
   done: boolean
   parent: string | undefined
+  autoupdate: boolean
   child: string | undefined
   elements: any[]
   elementsData: any[]
@@ -28,4 +29,24 @@ export interface UpdateStackResult {
   timeRemains: number
   done: boolean
   result?: any
+}
+
+export function isNumber(val: any): boolean {
+  return !Number.isNaN(val)
+}
+
+export function isArray(arr: any[]): boolean {
+  return Array.isArray(arr)
+}
+
+export function isEmpty(val: any): boolean {
+  return val === undefined || val === null
+}
+
+export function isString(val: any): boolean {
+  return typeof val === 'string' || val instanceof String
+}
+
+export function isObject(val: any): boolean {
+  return Object.prototype.toString.call(val) === '[object Object]'
 }

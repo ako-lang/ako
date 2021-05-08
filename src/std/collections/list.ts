@@ -16,5 +16,17 @@ export const list = {
   },
   'List.reverse': (arr: number[]): number[] => {
     return [...arr].reverse()
+  },
+  'List.append': (arr: number[], val: number): number[] => {
+    return [...arr, val]
+  },
+  'List.prepend': (arr: number[], val: number): number[] => {
+    return [val, ...arr]
+  },
+  'List.contains': (arr: number[], val: number): number => {
+    return arr.includes(val) ? 1 : 0
+  },
+  'List.concat': (arr: number[], arr2: number[]): number[] => {
+    return [...arr, ...arr2]
   }
 }

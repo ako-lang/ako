@@ -17,40 +17,70 @@ export const AssignTask = {
     const variable = ctx.vm.evaluate(ctx, entry.symbol)
 
     const res = Task.execute(ctx, entry.command, entryData, timeRemains)
-    if (res.done) ctx.vm.setData(ctx, variable.value, ctx.vm.getData(ctx, '$'))
-
+    if (res.done) {
+      if ('result' in res) {
+        ctx.vm.setData(ctx, variable.value, res.result)
+      } else {
+        ctx.vm.setData(ctx, variable.value, ctx.vm.getData(ctx, '$'))
+      }
+    }
     return res
   }
 }
 
+export const Args = {
+  create: (index, value) => {
+    if (value.type === 'Args') return value
+    return {type: 'Args', index, value}
+  },
+  evaluate: (ctx, entry) => entry
+}
+
+export const NamedArgs = {
+  create: (name, value) => {
+    if (value.type === 'NamedArgs') return value
+    return {type: 'NamedArgs', name, value}
+  },
+  evaluate: (ctx, entry) => entry
+}
+
+const evalArgs = (ctx, args) => {
+  let i = -1
+  return args.map((x) => {
+    if (x.type === 'KeyValue') {
+      return NamedArgs.create(ctx.vm.evaluate(ctx, x.symbol, true), ctx.vm.evaluate(ctx, x.value, true))
+    }
+    i = i + 1
+    return Args.create(i, ctx.vm.evaluate(ctx, x, true))
+  })
+}
+
 export const Task = {
-  create: (namespace, name, args) => {
-    return {type: 'Task', namespace, name, args}
+  create: (namespace, name, args, skip) => {
+    return {type: 'Task', namespace, name, args, skip}
   },
   execute: (ctx, entry, entryData, timeRemains) => {
+    if (entry.skip) {
+      entry.args = evalArgs(ctx, entry.args)
+      const stack = ctx.vm.createStack([{...entry, skip: false}], true)
+      ctx.vm.updateStack(stack, timeRemains, true)
+      return {
+        timeRemains,
+        done: true,
+        result: {
+          type: 'RunningTask',
+          id: stack.uid
+        }
+      }
+    }
+
     if (!entryData.meta) {
       let fn = ctx.vm.evaluate(ctx, entry.name)
       if (entry.namespace && entry.namespace.length > 0) {
         const namespace = ctx.vm.evaluate(ctx, entry.namespace[0], true)
         fn = `${namespace}.${fn}`
       }
-      let i = -1
-      const args = entry.args.map((x) => {
-        if (x.type === 'KeyValue') {
-          return {
-            type: 'NamedArgs',
-            name: ctx.vm.evaluate(ctx, x.symbol, true),
-            value: ctx.vm.evaluate(ctx, x.value, true)
-          }
-        }
-        i = i + 1
-        return {
-          type: 'Args',
-          index: i,
-          value: ctx.vm.evaluate(ctx, x, true)
-        }
-      })
-      // console.log(args)
+      const args = evalArgs(ctx, entry.args)
       entryData.meta = {fn, args}
     }
 
@@ -68,7 +98,7 @@ export const TaskDef = {
     ctx.vm.registerTask(entry.name.value, (ctx2, entry2, entryData2, time) => {
       if (!entryData2.meta.block) {
         const args = mapArgs(ctx, entry.args, entry.block.statements, entryData2.meta.args || [])
-        const block = ctx2.vm.createStack(entry.block.statements)
+        const block = ctx2.vm.createStack(entry.block.statements, false)
         for (const key in args) {
           ctx2.vm.setData({vm: ctx2.vm, stack: block}, key, args[key])
         }
@@ -77,7 +107,7 @@ export const TaskDef = {
       }
 
       const stack = ctx2.vm.stacks.get(entryData2.meta.block)
-      const res = ctx2.vm.updateStack(stack, time, true)
+      const res = ctx2.vm.updateStack(stack, time)
       if (res.done) res.result = stack.result
       return res
     })

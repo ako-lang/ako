@@ -1,5 +1,5 @@
 import assert from 'assert'
-import {runCode, runFileCode} from './helper'
+import {runCode, runFileCode} from '../helper'
 
 describe('Task', () => {
   it('Unexisting Task', () => {
@@ -82,6 +82,8 @@ a = @MethodName(1, 2, 3)
 b = @MethodName(val2=2, val1=1, val3=3)
 c = @MethodName(1, 2)
 d = @MethodName(val1=1, val3=3)
+arg = [1,2,3]
+e = @MethodName(arg[0], arg[1], arg[2])
     `,
       vm
     )
@@ -90,6 +92,7 @@ d = @MethodName(val1=1, val3=3)
     assert.deepStrictEqual((stack.data as any)['b'], [1, 2, 3])
     assert.deepStrictEqual((stack.data as any)['c'], [1, 2, -3])
     assert.deepStrictEqual((stack.data as any)['d'], [1, -2, 3])
+    assert.deepStrictEqual((stack.data as any)['e'], [1, 2, 3])
   })
 
   it('Sleep', () => {
@@ -101,5 +104,68 @@ a = 2
     assert.strictEqual((stack.data as any)['a'], 1)
     vm.update(2)
     assert.strictEqual((stack.data as any)['a'], 2)
+  })
+
+  it('Skip Task', () => {
+    const vm = runFileCode(
+      'Delay',
+      `
+## Args [
+  { name = "val", default = 0 }
+]
+@sleep(val)
+@mem_incr('counter', 1)
+    `
+    )
+    const {stack: stack2} = runCode(
+      `
+@mem_set('counter', 0)
+list = []
+for a in [1,2,5] {
+  job = @@Delay(a)
+  list = List.append(list, job)
+}
+
+@print("Task : {list}")
+a = @mem_get('counter')
+@waitTasks(list)
+b = @mem_get('counter')
+    `,
+      vm
+    )
+    assert.strictEqual((stack2.data as any)['a'], 0)
+    vm.update(2)
+    vm.update(2)
+    vm.update(2)
+    assert.strictEqual((stack2.data as any)['b'], 3)
+  })
+
+  it('Skip Task 2', () => {
+    const {vm, stack} = runCode(
+      `
+task DelayMessage ["delay", "message"] {
+  @sleep(delay)
+  @print(message)
+  @mem_incr('counter', 1)
+}
+
+@mem_set('counter', 0)
+// start 3 task that will run in parallel
+@@DelayMessage(1, "3 !")
+job1 = @@DelayMessage(2, "2 !")
+job2 = @@DelayMessage(3, "1 !") // store a task reference
+
+@print("Start !") // nothing stop the execution before so it will be executed immediately
+a = @mem_get('counter')
+@waitTasks([job1, job2]) // sleep here until one or multiple task are completed
+b = @mem_get('counter')
+@print("ZERO !")
+    `
+    )
+    assert.strictEqual((stack.data as any)['a'], 0)
+    vm.update(2)
+    vm.update(2)
+    vm.update(2)
+    assert.strictEqual((stack.data as any)['b'], 3)
   })
 })

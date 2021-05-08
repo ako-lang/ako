@@ -1,3 +1,4 @@
+import {isArray} from '../../core'
 import {mapArgs} from '../../helpers/args'
 
 export default {
@@ -9,8 +10,18 @@ export default {
     }
 
     entryData.elapsed += timeRemains
-
     if (entryData.elapsed >= entryData.duration) return {timeRemains: entryData.elapsed - entryData.duration, done: true}
     return {timeRemains: 0, done: false}
+  },
+  waitTasks: (ctx, entry, entryData, timeRemains) => {
+    if (!entryData.elapsed) {
+      const args = mapArgs(ctx, ['tasks'], [], entryData.meta.args || [])
+      entryData.tasks = isArray(args.tasks) ? args.tasks : [args.tasks]
+    }
+    for (const t of entryData.tasks) {
+      const entry = ctx.vm.stacks.get(t.id)
+      if (entry && !entry.done) return {timeRemains: 0, done: false}
+    }
+    return {timeRemains, done: true}
   }
 }

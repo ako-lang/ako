@@ -3,10 +3,10 @@ Ako {
 
   // Statement
   Block = "{" Stmt* "}"
-  Stmt = (Metadata | If | Assign | AssignTask | TaskDef | Task | ForLoop | Expr)
+  Stmt = (Metadata | If | Assign | AssignTask | TaskDef | SkipTask | Task | ForLoop | Expr)
 
   Assign = AssignLeft | AssignAdd | AssignIncr | AssignDecr | AssignSub
-  AssignTask = Var "=" Task
+  AssignTask = Var "=" (SkipTask | Task)
   AssignLeft = Var "=" Expr
   AssignAdd = Var "+=" Expr
   AssignSub = Var "-=" Expr
@@ -15,6 +15,7 @@ Ako {
   Metadata = "##" id Term
 
   TaskDef = "task" id (Array)? Block
+  SkipTask = "@@" (id ".")? id "(" NamedArguments ")"
   Task = "@" (id ".")? id "(" NamedArguments ")"
   NamedArguments = ListOf<(KeyValue | Expr), ",">
   Arguments = ListOf<Expr, ",">
