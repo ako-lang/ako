@@ -23,8 +23,8 @@ export const list = {
   'List.prepend': (arr: number[], val: number): number[] => {
     return [val, ...arr]
   },
-  'List.contains': (arr: number[], val: number): boolean => {
-    return arr.includes(val)
+  'List.contains': (arr: number[], val: number): number => {
+    return arr.includes(val) ? 1 : 0
   },
   'List.concat': (arr: number[], arr2: number[]): number[] => {
     return [...arr, ...arr2]

@@ -113,11 +113,8 @@ a = 2
 ## Args [
   { name = "val", default = 0 }
 ]
-@print("START {val}")
 @sleep(val)
 @mem_incr('counter', 1)
-count = @mem_get('counter')
-@print("STOP", count)
     `
     )
     const {stack: stack2} = runCode(
@@ -125,7 +122,6 @@ count = @mem_get('counter')
 @mem_set('counter', 0)
 list = []
 for a in [1,2,5] {
-  @print("val: {a}")
   job = @@Delay(a)
   list = List.append(list, job)
 }
@@ -133,8 +129,7 @@ for a in [1,2,5] {
 @print("Task : {list}")
 a = @mem_get('counter')
 @waitTasks(list)
-b = @mem_get('counter')
-@print('res {b}')
+
     `,
       vm
     )
@@ -144,6 +139,37 @@ b = @mem_get('counter')
     vm.update(2)
     assert.strictEqual((stack2.data as any)['b'], 3)
     console.log(stack2.data)
+    // assert.strictEqual((stack2.data as any)['a'], 1)
+  })
+
+  it('Skip Task 2', () => {
+    const {vm, stack} = runCode(
+      `
+task DelayMessage ["delay", "message"] {
+  @sleep(delay)
+  @print(message)
+  @mem_incr('counter', 1)
+}
+
+@mem_set('counter', 0)
+// start 3 task that will run in parallel
+@@DelayMessage(1, "3 !")
+job1 = @@DelayMessage(2, "2 !")
+job2 = @@DelayMessage(3, "1 !") // store a task reference
+
+@print("Start !") // nothing stop the execution before so it will be executed immediately
+a = @mem_get('counter')
+@waitTasks([job1, job2]) // sleep here until one or multiple task are completed
+b = @mem_get('counter')
+@print("ZERO !")
+    `
+    )
+    assert.strictEqual((stack.data as any)['a'], 0)
+    vm.update(2)
+    vm.update(2)
+    vm.update(2)
+    assert.strictEqual((stack.data as any)['b'], 3)
+    console.log(stack.data)
     // assert.strictEqual((stack2.data as any)['a'], 1)
   })
 })

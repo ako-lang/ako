@@ -51,4 +51,25 @@ b = List.append(list, 10)
     assert.deepStrictEqual((stack.data as any)['a'], [10, 1, 5, 2, 3, 4, 1])
     assert.deepStrictEqual((stack.data as any)['b'], [1, 5, 2, 3, 4, 1, 10])
   })
+
+  it('Concat', () => {
+    const {stack} = runCode(`
+list = [1,5,2,3,4,1]
+list2 = [12,24]
+a = List.concat(list, list2)
+    `)
+    assert.deepStrictEqual((stack.data as any)['list'], [1, 5, 2, 3, 4, 1])
+    assert.deepStrictEqual((stack.data as any)['a'], [1, 5, 2, 3, 4, 1, 12, 24])
+  })
+
+  it('Concat', () => {
+    const {stack} = runCode(`
+list = [1,5,2,3,4,1]
+a = List.contains(list, 3)
+b = List.contains(list, 6)
+    `)
+    assert.deepStrictEqual((stack.data as any)['list'], [1, 5, 2, 3, 4, 1])
+    assert.strictEqual((stack.data as any)['a'], 1)
+    assert.strictEqual((stack.data as any)['b'], 0)
+  })
 })
