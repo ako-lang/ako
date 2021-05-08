@@ -14,7 +14,7 @@ export class Interpreter {
     Object.keys(stdTasks).forEach((name) => this.registerTask(name, stdTasks[name]))
   }
 
-  createStack(elements, parent?: string): Stack {
+  createStack(elements, autoupdate = true, parent?: string): Stack {
     const stack: Stack = {
       data: {},
       uid: uid(),
@@ -23,6 +23,7 @@ export class Interpreter {
       started: false,
       done: false,
       parent,
+      autoupdate,
       child: undefined,
       elements,
       elementsData: elements.map((x) => {
@@ -40,7 +41,7 @@ export class Interpreter {
     this.registerTask(name, (ctx, fn, fnData, timeRemains) => {
       if (!fnData.meta.block) {
         const args = mapArgs(ctx, [], ast, fnData.meta.args)
-        const block = ctx.vm.createStack(ast)
+        const block = ctx.vm.createStack(ast, false)
         for (const key in args) {
           ctx.vm.setData({vm: ctx.vm, stack: block}, key, args[key])
         }
@@ -87,7 +88,7 @@ export class Interpreter {
 
   evaluate(ctx: Context, expr, resolveSymbol = false): any {
     if (!expr || !expr.type) return expr
-    if (!AkoElement[expr.type].evaluate) throw new Error(`Cannot Evaluate ${expr.type}`)
+    if (!AkoElement[expr.type] || !AkoElement[expr.type].evaluate) throw new Error(`Cannot Evaluate ${expr.type}`)
     return AkoElement[expr.type].evaluate(ctx, expr, resolveSymbol)
   }
 
@@ -112,16 +113,17 @@ export class Interpreter {
   }
 
   update(timeRemains: number): void {
-    for (const entry of this.stacks.values()) {
-      if (entry.parent) continue
+    for (const entry of [...this.stacks.values()]) {
+      if (!entry.autoupdate) continue
       this.updateStack(entry, timeRemains)
     }
   }
 
   updateStack(stack: Stack, timeRemains: number, autodelete = true): UpdateStackResult {
     stack.started = true
+    let time = timeRemains
 
-    while (stack.index < stack.elements.length && timeRemains > 0) {
+    while (stack.index < stack.elements.length && time > 0) {
       const entry = stack.elements[stack.index]
       const entryData = stack.elementsData[stack.index]
       if (!AkoElement[entry.type]) {
@@ -129,8 +131,8 @@ export class Interpreter {
       } else if (!AkoElement[entry.type].execute) {
         throw new Error('Cannot execute element: ' + entry.type)
       }
-      const res = AkoElement[entry.type].execute({vm: this, stack}, entry, entryData, timeRemains)
-      timeRemains = res.timeRemains
+      const res = AkoElement[entry.type].execute({vm: this, stack}, entry, entryData, time)
+      time = res.timeRemains
       if (res.done) {
         entry.done = true
         stack.index++
@@ -138,8 +140,12 @@ export class Interpreter {
     }
     if (stack.index >= stack.elements.length) {
       stack.done = true
-      if (autodelete) this.stacks.delete(stack.uid)
+      if (autodelete) this.deleteStack(stack)
     }
-    return {timeRemains, done: stack.done}
+    return {timeRemains: time, done: stack.done}
+  }
+
+  deleteStack(stack: Stack): void {
+    this.stacks.delete(stack.uid)
   }
 }

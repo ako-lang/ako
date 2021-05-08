@@ -1,4 +1,4 @@
-import {Context} from '../core'
+import {Context, isArray} from '../core'
 import {Number} from './scalar'
 
 export interface LoopWhileData {
@@ -41,7 +41,7 @@ export const LoopWhile = {
     }
 
     if (!entryData.meta.cond) return
-    const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+    const block = ctx.vm.createStack(entry.block.statements, false, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
     entryData.meta.block = block.uid
   },
   next: (ctx: Context, entry: LoopWhileData, entryData: any, timeRemains: number) => {
@@ -49,7 +49,7 @@ export const LoopWhile = {
 
     entryData.meta.cond = ctx.vm.evaluate(ctx, entry.cond, true)
     if (!entryData.meta.cond) return
-    const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+    const block = ctx.vm.createStack(entry.block.statements, false, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
     entryData.meta.block = block.uid
   },
   execute: (ctx: Context, entry: LoopWhileData, entryData: any, timeRemains: number) => {
@@ -90,7 +90,7 @@ export const LoopFor = {
     return {type: 'LoopFor', item, index: index.length > 0 ? index[0] : index, iterator, block} as LoopForData
   },
   initialize: (ctx: Context, entry: LoopForData, entryData: any) => {
-    const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+    const block = ctx.vm.createStack(entry.block.statements, false, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
     entryData.meta = {
       itemVar: ctx.vm.evaluate(ctx, entry.item),
       indexVar: ctx.vm.evaluate(ctx, entry.index),
@@ -99,7 +99,7 @@ export const LoopFor = {
       block: block.uid
     }
 
-    if (Array.isArray(entryData.meta.indexVar) && entryData.meta.indexVar.length === 0) {
+    if (isArray(entryData.meta.indexVar) && entryData.meta.indexVar.length === 0) {
       entryData.meta.indexVar = undefined
     }
   },
@@ -107,7 +107,7 @@ export const LoopFor = {
     if (timeRemains <= 0) return
     if (entryData.meta.index >= entryData.meta.iterator.length) return
 
-    const block = ctx.vm.createStack(entry.block.statements, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
+    const block = ctx.vm.createStack(entry.block.statements, false, ctx.stack.parent ? ctx.stack.parent : ctx.stack.uid)
     block.started = true
     entryData.meta.block = block.uid
 

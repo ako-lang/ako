@@ -1,3 +1,5 @@
+import {isArray, isEmpty, isObject} from '../core'
+
 const regexpVars = /{(?<var>[\w|$]*)}/gi
 
 export const String = {
@@ -11,7 +13,11 @@ export const String = {
       const variables = new Set([...matches].map((x) => x[1]))
       variables.forEach((x) => {
         if (!ctx.vm.hasData(ctx, x)) return
-        str = str.replace(new RegExp(x === '$' ? `{[${x}]}` : `{${x}}`, 'g'), ctx.vm.getData(ctx, x))
+        let val = ctx.vm.getData(ctx, x)
+        if (isEmpty(val)) return
+        if (isArray(val)) val = JSON.stringify(val)
+        if (isObject(val)) val = JSON.stringify(val)
+        str = str.replace(new RegExp(x === '$' ? `{[${x}]}` : `{${x}}`, 'g'), val)
       })
       return str
     }

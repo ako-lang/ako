@@ -4,6 +4,7 @@ test.ako
 node_modules
 coverage
 public
+mochawesome-report/
 
 coverage.lcov
 .nyc_output
