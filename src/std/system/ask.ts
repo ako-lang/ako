@@ -1,30 +1,48 @@
-export default {
-  ask: (ctx, fn, timeRemains) => {
-    /*
-        if (!fn.meta.started) {
-            // console.log(fn.meta.args)
-            const readline = require('readline')
-            
-            const question = fn.meta.args[0] || "Question"
-            const res = fn.meta.args[1]
+import {getArgs} from '../../helpers/args'
 
-            fn.meta.started = true
-            fn.meta.completed = false
+let ask = undefined
 
-            const rl = readline.createInterface({
-                input: process.stdin,
-                output: process.stdout
-            })
+if (!process.env.ISWEB) {
+  ask = (ctx, entry, entryData, timeRemains) => {
+    const setResult = (answer) => {
+      entryData.completed = true
+      entryData.result = answer
+    }
 
-            rl.question(question, (answer) => {
-                ctx.vm.setData(ctx, res, answer)
-                rl.close()
-                fn.meta.completed = true
-                // console.log('Completed', res, answer)
-            })
-        }
-        if (fn.meta.completed) return { timeRemains, done: true }
-        */
+    if (!entryData.started || ctx.vm.resume) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const readline = require('readline')
+
+      const args = getArgs(ctx, ['question', 'answer'], entryData.meta.args)
+      entryData.started = true
+      entryData.completed = false
+      entryData.answer = args.answer
+
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      })
+
+      if (!entryData.answer) {
+        rl.question(args.question, (answer) => {
+          rl.close()
+          setResult(answer)
+        })
+      } else {
+        rl.close()
+      }
+    } else if (entryData.answer) {
+      setResult(entryData.answer)
+    }
+    if (entryData.completed) return {timeRemains, done: true, result: entryData.result}
+
     return {timeRemains: 0, done: false}
+  }
+}
+
+export default {
+  ask: (ctx, fn, fnData, timeRemains) => {
+    if (!ask) return {timeRemains: 0, done: false}
+    return ask(ctx, fn, fnData, timeRemains)
   }
 }

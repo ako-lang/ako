@@ -3,7 +3,6 @@ import {Interpreter} from '../interpreter'
 import fs from 'fs'
 import path from 'path'
 import {listAkoFiles} from '../helpers/folder'
-import {Stack} from '../core'
 import akoGrammar from '../ako_grammar.txt'
 
 function loadAkoModule(vm: Interpreter, projectFolder: string) {

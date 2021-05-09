@@ -11,6 +11,7 @@ const stackOptionDefault: IStackOption = {
 }
 
 export class Interpreter {
+  resume = false
   stacks: Map<string, Stack> = new Map<string, Stack>()
   functions: Map<string, Func> = new Map()
   tasks: Map<string, Task> = new Map()
@@ -157,5 +158,26 @@ export class Interpreter {
 
   deleteStack(stack: Stack): void {
     this.stacks.delete(stack.uid)
+  }
+
+  getState(): any {
+    return [...this.stacks]
+  }
+
+  setState(data: any) {
+    this.stacks = new Map(data)
+    for (const stack of [...this.stacks.values()]) {
+      for (let i = 0; i < stack.elements.length; i++) {
+        const entry = stack.elements[i]
+        const entryData = stack.elementsData[i]
+        if (entry.type === 'TaskDef') {
+          AkoElement.TaskDef.execute({vm: this, stack}, entry, entryData, 0.1)
+          console.log('Found TaskDef', entry, entryData)
+        }
+      }
+    }
+    this.resume = true
+    this.update(0.000001)
+    this.resume = false
   }
 }
