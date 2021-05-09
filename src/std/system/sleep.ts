@@ -1,10 +1,10 @@
 import {isArray} from '../../core'
-import {mapArgs} from '../../helpers/args'
+import {getArgs} from '../../helpers/args'
 
 export default {
   sleep: (ctx, entry, entryData, timeRemains) => {
     if (!entryData.elapsed) {
-      const args = mapArgs(ctx, ['duration'], [], entryData.meta.args || [])
+      const args = getArgs(ctx, ['duration'], entryData.meta.args)
       entryData.elapsed = 0
       entryData.duration = args.duration
     }
@@ -15,7 +15,7 @@ export default {
   },
   waitTasks: (ctx, entry, entryData, timeRemains) => {
     if (!entryData.elapsed) {
-      const args = mapArgs(ctx, ['tasks'], [], entryData.meta.args || [])
+      const args = getArgs(ctx, ['tasks'], entryData.meta.args)
       entryData.tasks = isArray(args.tasks) ? args.tasks : [args.tasks]
     }
     for (const t of entryData.tasks) {

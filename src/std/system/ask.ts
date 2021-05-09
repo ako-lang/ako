@@ -1,27 +1,38 @@
-import {mapArgs} from '../../helpers/args'
+import {getArgs} from '../../helpers/args'
 
 let ask = undefined
 
-if (process.env.ISNODE) {
+if (!process.env.ISWEB) {
   ask = (ctx, entry, entryData, timeRemains) => {
+    const setResult = (answer) => {
+      entryData.completed = true
+      entryData.result = answer
+    }
+
     if (!entryData.started || ctx.vm.resume) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const readline = require('readline')
 
-      const args = mapArgs(ctx, ['question'], [], entryData.meta.args || [])
+      const args = getArgs(ctx, ['question', 'answer'], entryData.meta.args)
       entryData.started = true
       entryData.completed = false
+      entryData.answer = args.answer
 
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
       })
 
-      rl.question(args.question, (answer) => {
+      if (!entryData.answer) {
+        rl.question(args.question, (answer) => {
+          rl.close()
+          setResult(answer)
+        })
+      } else {
         rl.close()
-        entryData.completed = true
-        entryData.result = answer
-      })
+      }
+    } else if (entryData.answer) {
+      setResult(entryData.answer)
     }
     if (entryData.completed) return {timeRemains, done: true, result: entryData.result}
 

@@ -1,5 +1,9 @@
 import {Context} from '../core'
 
+export function getArgs(ctx, variables: string[], args: string[] | undefined) {
+  return mapArgs(ctx, variables, [], args || [])
+}
+
 export function mapArgs(ctx: Context, taskDefArgs: any, blocks: any, values: any) {
   // console.log(taskDefArgs, blocks)
   const taskDefMetaArgs = taskDefArgs.filter((x) => !!x).map((x: any) => ctx.vm.evaluate(ctx, x, true))
