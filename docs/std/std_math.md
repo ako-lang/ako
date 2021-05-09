@@ -8,7 +8,7 @@
 * `Math.ceil(number)` : Rounds a number up to the next largest integer
 * `Math.floor(number)` : Rounds a number down to the previous largest integer
 
-## Sample
+### Sample
 
 ```js
 a = Math.PI() // a = 3.141592653589793

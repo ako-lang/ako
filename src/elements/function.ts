@@ -125,10 +125,12 @@ export const Function = {
     return {type: 'Function', namespace, name, args}
   },
   evaluate: (ctx, entry) => {
-    let fn = ctx.vm.evaluate(entry.name)
+    let fn = ctx.vm.evaluate(ctx, entry.name)
     if (entry.namespace) {
       const entries = entry.namespace.map((x) => ctx.vm.evaluate(ctx, x))
-      fn = `${entries.join(',')}.${ctx.vm.evaluate(ctx, entry.name)}`
+      if (entries.length > 0) {
+        fn = `${entries.join(',')}.${ctx.vm.evaluate(ctx, entry.name)}`
+      }
     }
     const args = entry.args.map((x) => ctx.vm.evaluate(ctx, x, true))
     return ctx.vm.callFunction(fn, ...args)

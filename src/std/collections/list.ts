@@ -28,5 +28,8 @@ export const list = {
   },
   'List.concat': (arr: number[], arr2: number[]): number[] => {
     return [...arr, ...arr2]
+  },
+  'List.join': (arr: number[], separator: string): string => {
+    return arr.join(separator)
   }
 }

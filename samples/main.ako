@@ -3,5 +3,14 @@ fibo15 = @fibo(15)
 
 @Math.main()
 
-name = @ask("What is your name?")
-@print("Welcome {name} !")
+task DelayMessage ["msg"] {
+  @print("Hum")
+  for i in [3,2,1] {
+    @sleep(1)
+    @print(String.repeat(".", i))
+  }
+  @print(msg)
+}
+
+name = @ask('What is your name ?')
+@DelayMessage("Hello {name} !")
