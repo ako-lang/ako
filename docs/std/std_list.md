@@ -1,17 +1,27 @@
-# List
+# String
 
 ## Functions
-* `List.filter(list, lambda)`
-* `List.map(list, lambda)`
-* `List.sort(list, lambda)`
-* `List.reverse(list)`
+* `String.capitalize(string) => string`
+* `String.upper(string) => string`
+* `String.lower(string) => string`
+* `String.repeat(string, amount) => string`
+* `String.startsWith(string, sub) => string`
+* `String.endsWith(string, sub) => string`
+* `String.trim(string) => string`
+* `String.split(string, sep) => list`
+* `String.replace(string, search, replacement) => string`
 
-## Sample
+### Sample
 
 ```js
-a = [1,2,3,4,5]
-b = List.filter(a, (val) => val < 4) // b = [1,2,3]
-b = List.map(a, (val) => val * 2) // b = [2,4,6,8,10]
-b = List.sort(a, (val1, val2) => val2 - val1) // [5,4,3,2,1]
-b = List.reverse(a) // [5,4,3,2,1]
+a = "bOb is a tuna "
+b = String.capitalize(a) // b = 'BOb Is A Tuna '
+b = String.upper(a) // b = 'BOB IS A TUNA '
+b = String.lower(a) // b = 'bob is a tuna '
+b = String.repeat(a, 3) // b = 'bOb is a tuna bOb is a tuna bOb is a tuna '
+b = String.startsWith(a, 'bOb') // b = true
+b = String.endsWith(a, 'tuna') // b = false
+b = String.trim(a) // b = 'bOb is a tuna'
+b = String.split(a, ' ') // b = ['bOb','is','a','tuna']
+b = String.replace(a, 'tuna', 'bob') // b = 'bOb is a bob '
 ```
