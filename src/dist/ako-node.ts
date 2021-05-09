@@ -3,7 +3,10 @@ import {Interpreter} from '../interpreter'
 import fs from 'fs'
 import path from 'path'
 
-const akoGrammar = fs.readFileSync(path.resolve(__dirname, '../ako_grammar.txt'), 'utf-8')
+const grammarPaths = ['../ako_grammar.txt', '../../ako_grammar.txt', '../src/ako_grammar.txt']
+const grammarPath = grammarPaths.find((x) => fs.existsSync(path.resolve(__dirname, x)))
+if (!grammarPath) throw new Error('Cant locate Ako Grammar file')
+const akoGrammar = fs.readFileSync(path.resolve(__dirname, grammarPath), 'utf-8')
 
 const {grammar, ASTBuilder} = getGrammar(akoGrammar)
 

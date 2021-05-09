@@ -1,6 +1,6 @@
 import {getGrammar} from '../semantic'
 import {Interpreter} from '../interpreter'
-import akoGrammar from '../ako_grammar.txt'
+import akoGrammar from '../../ako_grammar.txt'
 
 const {grammar, ASTBuilder} = getGrammar(akoGrammar)
 

@@ -3,7 +3,7 @@ import {Interpreter} from '../interpreter'
 import fs from 'fs'
 import path from 'path'
 import {listAkoFiles} from '../helpers/folder'
-import akoGrammar from '../ako_grammar.txt'
+import akoGrammar from '../../ako_grammar.txt'
 
 function loadAkoModule(vm: Interpreter, projectFolder: string) {
   const packagePath = path.join(projectFolder, 'module.json')
