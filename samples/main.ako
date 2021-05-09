@@ -2,3 +2,6 @@ fibo15 = @fibo(15)
 @print("Fibo(15) = {fibo15}")
 
 @Math.main()
+
+name = @ask("What is your name?")
+@print("Welcome {name} !")

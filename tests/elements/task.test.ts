@@ -1,5 +1,5 @@
 import assert from 'assert'
-import {runCode, runFileCode} from '../helper'
+import {createInterpreter, runCode, runFileCode} from '../helper'
 
 describe('Task', () => {
   it('Unexisting Task', () => {
@@ -165,5 +165,46 @@ b = @mem_get('counter')
     assert.strictEqual((stack.data as any)['a'], 0)
     vm.update(3)
     assert.strictEqual((stack.data as any)['b'], 3)
+  })
+
+  it('Serialize Running Task', () => {
+    const {vm, stack} = runCode(`
+task waiting [] {
+  @sleep(4)
+  @print("Waited finish")
+  @mem_set('counter', 1)
+}
+a = 0
+@mem_set('counter', 0)
+b = @mem_get('counter')
+
+@@waiting()
+@sleep(1)
+a = 1
+b = @mem_get('counter')
+@sleep(5)
+a = 2
+b = @mem_get('counter')
+
+    `)
+    assert.strictEqual((stack.data as any)['a'], 0)
+    vm.update(1)
+    assert.strictEqual((stack.data as any)['a'], 1)
+
+    // the state is converted to JSON
+    const state = JSON.stringify(vm.getState())
+
+    // create a new interpreter and load the state
+    const vm2 = createInterpreter()
+    vm2.setState(JSON.parse(state))
+
+    // resume the execution on the new interpreter
+    const stack2 = vm2.stacks.get(stack.uid)
+    vm2.update(5)
+    assert.strictEqual((stack2.data as any)['a'], 2)
+    assert.strictEqual((stack.data as any)['a'], 1)
+
+    assert.strictEqual((stack2.data as any)['b'], 1)
+    assert.strictEqual((stack.data as any)['b'], 0)
   })
 })
