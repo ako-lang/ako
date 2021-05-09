@@ -25,7 +25,7 @@ Here is a sample of what Ako looks like
 task DelayMessage ["msg"] {
   @print("Hum")
   for i in [3,2,1] {
-    @delay(1)
+    @sleep(1)
     @print(String.repeat(".", i))
   }
   @print(msg)
@@ -34,7 +34,7 @@ task DelayMessage ["msg"] {
 name = @ask('What is your name ?')
 @DelayMessage("Hello {name} !")
 ```
-[Test this code](https://runkit.com/kefniark/6097dd000464950019093d1a)
+**[ [Test this code](https://runkit.com/kefniark/6097dd000464950019093d1a) ]**
 
 # Problem & Goals
 
