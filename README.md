@@ -15,29 +15,24 @@
 It's a simple scripting language designed to be embedded in application or webApp
 
 **[
-[Documentation](https://ako-lang.github.io/ako/index.html#/./docs/grammar_basic) | [Playground](https://codesandbox.io/s/ako-template-2qwb5?file=/src/index.js)
+[Documentation](https://ako-lang.github.io/ako/index.html) | [Playground](https://codesandbox.io/s/ako-template-2qwb5?file=/src/index.js)
 ]**
 
 ---
 
-Here is a sample that compute [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number) in a recursive (and inefficient) way
+Here is a sample of what Ako looks like
 ```js
-// We create a task to compute fibo
-task fibo ["val"] {
-    if val <= 0 { return 0 }
-    elif val == 1 { return 1 }
-
-    prev1 = @fibo(val - 1)
-    prev2 = @fibo(val - 2)
-    return prev1 + prev2
+task DelayMessage ["msg"] {
+  @print("Hum")
+  for i in [3,2,1] {
+    @delay(1)
+    @print(String.repeat(".", i))
+  }
+  @print(msg)
 }
 
-// We can do some math
-val = Math.max(12 + 3, 0)
-
-// We call our task and print the result
-result = @fibo(val)
-@print("Result of Fibo({val}) = {result}")
+name = @ask('What is your name ?')
+@DelayMessage("Hello {name} !")
 ```
 
 # Problem & Goals
@@ -79,12 +74,12 @@ It's compiled for **Windows**, **Mac** and **Linux** and once downloaded, you ca
 
 For web usage, you can load the library directly with ESM imports
 ```js
-import * as Ako from 'https://cdn.jsdelivr.net/npm/ako-lang@0.0.5/dist/web/ako-web.js'
+import * as Ako from 'https://cdn.jsdelivr.net/npm/ako-lang@0.0.12/dist/ako-web.js'
 ```
 
 ## How to write Ako scripts ?
 
-For that, please take a look at our [Documentation](https://ako-lang.github.io/ako/index.html#/./docs/grammar_basic)
+For that, please take a look at our [Documentation](https://ako-lang.github.io/ako/index.html)
 
 
 # Ako Development

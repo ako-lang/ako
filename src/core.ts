@@ -39,10 +39,10 @@ export interface UpdateStackResult {
 }
 
 export function isNumber(val: any): boolean {
-  return !Number.isNaN(val)
+  return !isEmpty(val) && val !== '' && !isNaN(val)
 }
 
-export function isArray(arr: any[]): boolean {
+export function isArray(arr: any): boolean {
   return Array.isArray(arr)
 }
 
