@@ -34,6 +34,7 @@ task DelayMessage ["msg"] {
 name = @ask('What is your name ?')
 @DelayMessage("Hello {name} !")
 ```
+[Test this code](https://runkit.com/kefniark/6097dd000464950019093d1a)
 
 # Problem & Goals
 
