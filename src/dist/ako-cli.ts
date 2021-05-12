@@ -62,7 +62,7 @@ function loadAkoModule(vm: Interpreter, projectFolder: string, info: AnalyzeInfo
       const num = chalk.cyanBright(`${i + 1}`)
       const level =
         info[i].level === 'error' ? chalk.red(`[${info[i].level.toUpperCase()}]`) : chalk.yellow(`[${info[i].level.toUpperCase()}]`)
-      const line = info[i].line >= 0 ? ` - line ${info[i].line}` : ''
+      const line = info[i].line >= 0 ? ` - line ${info[i].line + 1}` : ''
       const location = chalk.green(`(Location: ${info[i].file}${line})`)
       const code =
         (info[i].sample_before ? info[i].sample_before : '') +

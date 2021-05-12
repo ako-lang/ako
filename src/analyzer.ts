@@ -86,14 +86,14 @@ export class Analyzer {
         const val = variable as CommandDebug
         // console.log(variable, val)
         info.push(
-          (Object.assign(
+          Object.assign(
             {},
             {
               level: 'error',
               message: `Usage of unknown Variable '${key.value}'`
             },
             val.debug
-          ) as unknown) as AnalyzeInfo
+          ) as unknown as AnalyzeInfo
         )
       }
     }
@@ -108,14 +108,14 @@ export class Analyzer {
       if (!existing.has(name)) {
         const debug = (func as CommandDebug).debug
         info.push(
-          (Object.assign(
+          Object.assign(
             {},
             {
               level: 'error',
               message: `Usage of unknown Function '${name}'`
             },
             debug
-          ) as unknown) as AnalyzeInfo
+          ) as unknown as AnalyzeInfo
         )
       }
     }
@@ -136,14 +136,14 @@ export class Analyzer {
       if (!existing.has(name)) {
         const debug = (task as CommandDebug).debug
         info.push(
-          (Object.assign(
+          Object.assign(
             {},
             {
               level: 'error',
               message: `Usage of unknown Task '${name}'`
             },
             debug
-          ) as unknown) as AnalyzeInfo
+          ) as unknown as AnalyzeInfo
         )
       }
     }
