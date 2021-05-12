@@ -46,9 +46,9 @@ Most [No-code or Low-code](https://en.wikipedia.org/wiki/Low-code_development_pl
 
 Ako tries to fill the gap by providing at the same time:
 * A [visual programming interface](https://github.com/ako-lang/ako-editor) for beginners
-* A programming language for more advanced users but easy to learn
 * An interpreter designed to run almost anywhere
-
+* A programming language for more advanced users but easy to learn
+* Automatic common error detection with code analysis and human friendly error message
 
 # Getting Started
 

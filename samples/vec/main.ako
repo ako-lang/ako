@@ -1,7 +1,7 @@
 for countdown in [5,4,3,2,1,0] {
     if countdown > 0 {
         @print("{countdown} !")
-        @sleep(0.1)
+        @sleep(250)
     } else {
         @print("Countdown Finish !")
     }

@@ -1,8 +1,23 @@
+import {Context, Command, UpdateStackResult} from '../core'
+
+export interface IfCommand extends Command {
+  ifCond: any
+  ifBlock: any
+  elifCond: any[]
+  elifBlock: any[]
+  elseCond: any
+  elseBlock: any
+}
+
+export interface IfCommandData {
+  meta: {block: string}
+}
+
 export const If = {
-  create: (ifCond, ifBlock, elifCond, elifBlock, elseBlock) => {
-    return {type: 'If', ifCond, ifBlock, elifCond, elifBlock, elseBlock}
+  create: (ifCond, ifBlock, elifCond, elifBlock, elseBlock): IfCommand => {
+    return {type: 'If', ifCond, ifBlock, elifCond, elifBlock, elseBlock} as IfCommand
   },
-  initialize: (ctx, entry, entryData) => {
+  initialize: (ctx: Context, entry: IfCommand, entryData: IfCommandData): void => {
     // if
     if (ctx.vm.evaluate(ctx, entry.ifCond, true)) {
       const block = ctx.vm.createStack(entry.ifBlock.statements, {
@@ -35,7 +50,7 @@ export const If = {
       entryData.meta = {block: block.uid}
     }
   },
-  execute: (ctx, entry, entryData, timeRemains) => {
+  execute: (ctx: Context, entry: IfCommand, entryData: IfCommandData, timeRemains: number): UpdateStackResult => {
     // initialize on the first call
     if (!entryData.meta) If.initialize(ctx, entry, entryData)
 

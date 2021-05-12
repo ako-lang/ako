@@ -1,5 +1,6 @@
 import {getGrammar} from '../semantic'
 import {Interpreter} from '../interpreter'
+import {Analyzer} from '../analyzer'
 import fs from 'fs'
 import path from 'path'
 
@@ -15,4 +16,4 @@ const toAst = (codeTxt: string) => {
   if (!match) throw new Error(`Syntax Error`)
   return ASTBuilder(match).toAST()
 }
-export {toAst, Interpreter}
+export {toAst, Interpreter, Analyzer}

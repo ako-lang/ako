@@ -9,5 +9,10 @@ export const math = {
   'Math.min': (...args: number[]) => Math.min(...args),
   'Math.abs': (arg: number) => Math.abs(arg),
   'Math.ceil': (arg: number) => Math.ceil(arg),
-  'Math.floor': (arg: number) => Math.floor(arg)
+  'Math.floor': (arg: number) => Math.floor(arg),
+  'Math.round': (arg: number) => Math.round(arg),
+
+  // random
+  'Math.rand': (min = 0, max = 1) => Math.random() * (max - min) + min,
+  'Math.randint': (min = 0, max = 1) => Math.floor(Math.random() * (max + 1 - min) + min)
 }

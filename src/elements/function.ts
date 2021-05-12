@@ -1,3 +1,4 @@
+import {Context} from 'node:vm'
 import {mapArgs} from '../helpers/args'
 
 export const Metadata = {
@@ -59,6 +60,14 @@ export const Task = {
   create: (namespace, name, args, skip) => {
     return {type: 'Task', namespace, name, args, skip}
   },
+  name: (ctx, entry) => {
+    let fn = ctx.vm.evaluate(ctx, entry.name)
+    if (entry.namespace && entry.namespace.length > 0) {
+      const namespace = ctx.vm.evaluate(ctx, entry.namespace[0], true)
+      fn = `${namespace}.${fn}`
+    }
+    return fn
+  },
   execute: (ctx, entry, entryData, timeRemains) => {
     if (entry.skip) {
       entry.args = evalArgs(ctx, entry.args)
@@ -78,11 +87,7 @@ export const Task = {
     }
 
     if (!entryData.meta) {
-      let fn = ctx.vm.evaluate(ctx, entry.name)
-      if (entry.namespace && entry.namespace.length > 0) {
-        const namespace = ctx.vm.evaluate(ctx, entry.namespace[0], true)
-        fn = `${namespace}.${fn}`
-      }
+      const fn = Task.name(ctx, entry)
       const args = evalArgs(ctx, entry.args)
       entryData.meta = {fn, args}
     }
@@ -124,7 +129,7 @@ export const Function = {
   create: (namespace, name, args) => {
     return {type: 'Function', namespace, name, args}
   },
-  evaluate: (ctx, entry) => {
+  name: (ctx: Context, entry) => {
     let fn = ctx.vm.evaluate(ctx, entry.name)
     if (entry.namespace) {
       const entries = entry.namespace.map((x) => ctx.vm.evaluate(ctx, x))
@@ -132,8 +137,12 @@ export const Function = {
         fn = `${entries.join(',')}.${ctx.vm.evaluate(ctx, entry.name)}`
       }
     }
+    return fn
+  },
+  evaluate: (ctx: Context, entry) => {
+    const name = Function.name(ctx, entry)
     const args = entry.args.map((x) => ctx.vm.evaluate(ctx, x, true))
-    return ctx.vm.callFunction(fn, ...args)
+    return ctx.vm.callFunction(name, ...args)
   }
 }
 

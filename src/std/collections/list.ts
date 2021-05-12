@@ -31,5 +31,11 @@ export const list = {
   },
   'List.join': (arr: number[], separator: string): string => {
     return arr.join(separator)
+  },
+  'List.range': (from: number, to?: number): number[] => {
+    const size = to !== undefined ? to - from : from
+    let res = [...Array(size >= 0 ? size : 0).keys()]
+    if (to !== undefined) res = res.map((x) => x + from)
+    return res
   }
 }
