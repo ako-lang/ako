@@ -6,11 +6,13 @@ export default {
     if (!entryData.elapsed) {
       const args = getArgs(ctx, ['duration'], entryData.meta.args)
       entryData.elapsed = 0
-      entryData.duration = args.duration
+      entryData.duration = args.duration || 0
     }
 
     entryData.elapsed += timeRemains
-    if (entryData.elapsed >= entryData.duration) return {timeRemains: entryData.elapsed - entryData.duration, done: true}
+    if (entryData.elapsed >= entryData.duration) {
+      return {timeRemains: entryData.elapsed - entryData.duration, done: true}
+    }
     return {timeRemains: 0, done: false}
   },
   waitTasks: (ctx, entry, entryData, timeRemains) => {

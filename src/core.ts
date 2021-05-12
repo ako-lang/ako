@@ -1,5 +1,9 @@
 import {Interpreter} from './interpreter'
 
+export interface Command {
+  type: string
+}
+
 export type Func = (...args: any) => any
 
 export type Task = (ctx: Context, fn: any, fnData: any, time: number) => UpdateStackResult

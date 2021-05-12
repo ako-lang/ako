@@ -1,6 +1,7 @@
 import {getGrammar} from '../semantic'
 import {Interpreter} from '../interpreter'
 import akoGrammar from '../../ako_grammar.txt'
+import {Analyzer} from '../analyzer'
 
 const {grammar, ASTBuilder} = getGrammar(akoGrammar)
 
@@ -9,4 +10,4 @@ const toAst = (codeTxt: string) => {
   if (!match) throw new Error(`Syntax Error`)
   return ASTBuilder(match).toAST()
 }
-export {toAst, Interpreter}
+export {toAst, Interpreter, Analyzer}

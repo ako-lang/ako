@@ -1,12 +1,22 @@
+import {Context} from 'node:vm'
 import {isArray, isEmpty, isObject} from '../core'
 
 const regexpVars = /{(?<var>[\w|$]*)}/gi
 
-export const String = {
+export interface ScalarCommand<T> {
+  value: T
+}
+
+export interface ScalarCommandEntry<T> {
+  create: (value: T) => ScalarCommand<T>
+  evaluate: (ctx: Context, expression: ScalarCommand<T>, resolve?: boolean) => T
+}
+
+export const String: ScalarCommandEntry<string> = {
   create: (value) => {
     return {type: 'String', value}
   },
-  evaluate: (ctx, expression) => {
+  evaluate: (ctx, expression): string => {
     if (expression.value.indexOf('{') !== -1) {
       let str = expression.value
       const matches = expression.value.matchAll(regexpVars)
@@ -25,16 +35,16 @@ export const String = {
   }
 }
 
-export const Number = {
+export const Number: ScalarCommandEntry<number> = {
   create: (value) => {
     return {type: 'Number', value}
   },
-  evaluate: (ctx, expression) => {
+  evaluate: (_ctx, expression) => {
     return expression.value
   }
 }
 
-export const Symbol = {
+export const Symbol: ScalarCommandEntry<string> = {
   create: (value) => {
     return {type: 'Symbol', value}
   },
@@ -46,9 +56,9 @@ export const Symbol = {
   }
 }
 
-export const SymbolLast = {
+export const SymbolLast: ScalarCommandEntry<void> = {
   create: () => {
-    return {type: 'SymbolLast'}
+    return {type: 'SymbolLast', value: undefined}
   },
   evaluate: (ctx) => {
     return ctx.vm.getData(ctx, '$')

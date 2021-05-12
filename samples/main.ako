@@ -6,8 +6,9 @@ fibo15 = @fibo(15)
 task DelayMessage ["msg"] {
   @print("Hum")
   for i in [3,2,1] {
-    @sleep(1)
+    @sleep(250)
     @print(String.repeat(".", i))
+    @sleep(250)
   }
   @print(msg)
 }

@@ -48,7 +48,7 @@ export const LoopWhile = {
     entryData.meta.block = block.uid
   },
   next: (ctx: Context, entry: LoopWhileData, entryData: any, timeRemains: number) => {
-    if (timeRemains <= 0) return
+    // if (timeRemains <= 0) return
 
     entryData.meta.cond = ctx.vm.evaluate(ctx, entry.cond, true)
     if (!entryData.meta.cond) return
@@ -113,7 +113,7 @@ export const LoopFor = {
     }
   },
   next: (ctx: Context, entry: LoopForData, entryData: any, timeRemains: number) => {
-    if (timeRemains <= 0) return
+    // if (timeRemains <= 0) return
     if (entryData.meta.index >= entryData.meta.iterator.length) return
 
     const block = ctx.vm.createStack(entry.block.statements, {

@@ -71,4 +71,15 @@ b = List.contains(list, 6)
     assert.strictEqual((stack.data as any)['a'], 1)
     assert.strictEqual((stack.data as any)['b'], 0)
   })
+
+  it('Range', () => {
+    const {stack} = runCode(`
+list = List.range()
+list2 = List.range(5)
+list3 = List.range(10, 20)
+    `)
+    assert.deepStrictEqual((stack.data as any)['list'], [])
+    assert.deepStrictEqual((stack.data as any)['list2'], [0, 1, 2, 3, 4])
+    assert.deepStrictEqual((stack.data as any)['list3'], [10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
+  })
 })
