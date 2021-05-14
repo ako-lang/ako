@@ -21,8 +21,8 @@ export function getGrammar(akoGrammar: string) {
     const src = start.source.sourceString
     const line = src.substring(0, start.source.startIdx).split('\n').length - 1
     const sample = src.substring(start.source.startIdx, end.source.endIdx)
-    const before = src.substring(start.source.startIdx - 15 > 0 ? start.source.startIdx - 15 : 0, start.source.startIdx)
-    const after = src.substring(end.source.endIdx, end.source.endIdx + 15)
+    const before = src.substring(start.source.startIdx - 10 > 0 ? start.source.startIdx - 10 : 0, start.source.startIdx)
+    const after = src.substring(end.source.endIdx, end.source.endIdx + 10)
 
     res.debug = {
       line,
@@ -105,8 +105,9 @@ export function getGrammar(akoGrammar: string) {
     Return: (a, b) => debugWrapper(a, b, AkoElement.Return.create(b.toAST())),
 
     // Var
+    comment: (a) => debugWrapper(a, a, AkoElement.Comment.create(a.sourceString)),
     id: (a) => debugWrapper(a, a, AkoElement.String.create(a.sourceString)),
-    Var_single: (a) => debugWrapper(a, a, AkoElement.Symbol.create(a.toAST())),
+    Var_single: (a) => debugWrapper(a, a, AkoElement.Symbol.create(a.sourceString)),
     Var_select: (a, b, c) => debugWrapper(a, c, AkoElement.SymbolSelect.create(a.toAST(), c.toAST())),
     Var_range: (a, b, c, d, e, f) => debugWrapper(a, f, AkoElement.SymbolRange.create(a.toAST(), c.toAST(), e.toAST())),
     Var_subscript: (a, b, c, d) => debugWrapper(a, d, AkoElement.SymbolSub.create(a.toAST(), c.toAST())),

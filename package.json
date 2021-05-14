@@ -21,7 +21,8 @@
     "cli",
     "nocode",
     "lowcode",
-    "interpreter"
+    "interpreter",
+    "Ako"
   ],
   "author": {
     "name": "Kevin destrem",
@@ -74,6 +75,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "chalk": "^4.1.1"
+    "chalk": "^4.1.1",
+    "dateformat": "^4.5.1"
   }
 }

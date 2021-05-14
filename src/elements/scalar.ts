@@ -35,6 +35,15 @@ export const String: ScalarCommandEntry<string> = {
   }
 }
 
+export const Comment = {
+  create: (value) => {
+    return {type: 'Comment', value}
+  },
+  execute: (ctx, entry, entryData, time) => {
+    return {timeRemains: time, done: true}
+  }
+}
+
 export const Number: ScalarCommandEntry<number> = {
   create: (value) => {
     return {type: 'Number', value}

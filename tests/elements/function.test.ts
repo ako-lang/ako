@@ -13,9 +13,14 @@ a = unknown(1,2,3,4,5)
   it('Check Expression Function', () => {
     const {stack} = runCode(`
 a = Math.max(1,2,3,4,5)
-
+b = Math.max(1,2,3,4,5) - 2
+c = 2 - Math.max(1,2,3,4,5)
+d = (Math.max(1,2,3,4,5) + 2) % 5
     `)
     assert.strictEqual((stack.data as any)['a'], 5)
+    assert.strictEqual((stack.data as any)['b'], 3)
+    assert.strictEqual((stack.data as any)['c'], -3)
+    assert.strictEqual((stack.data as any)['d'], 2)
   })
 
   it('Vector', () => {
