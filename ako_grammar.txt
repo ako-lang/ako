@@ -3,7 +3,7 @@ Ako {
 
   // Statement
   Block = "{" Stmt* "}"
-  Stmt = (Metadata | If | Assign | AssignTask | TaskDef | SkipTask | Task | ForLoop | Expr)
+  Stmt = (Metadata | If | Assign | AssignTask | TaskDef | SkipTask | Task | ForLoop | Expr | comment)
 
   Assign = AssignLeft | AssignAdd | AssignIncr | AssignDecr | AssignSub
   AssignTask = Var "=" (SkipTask | Task)
@@ -23,9 +23,9 @@ Ako {
   // Expression
   Pipe = (Pipe | ExprItem) "|>" ExprItem
   Expr =  Pipe | ExprItem
-  ExprItem = LambdaInline | Fn | MathExpr | Term
+  ExprItem = LambdaInline | MathExpr
 
-  Term = Var | Number | String | bool | Array | Dictionary | Last
+  Term = Fn | bool | Var | Number | String | Array | Dictionary | Last
   Fn = (id ".")? id "(" Arguments ")"
   // Lambda = "(" ListOf<id, ","> ")" "=>" Block
   LambdaInline = "(" ListOf<id, ","> ")" "=>" Expr
@@ -81,7 +81,7 @@ Ako {
               |  Var "." id  -- select
               |  id -- single
 
-  id  = ~keyword char
+  id  = ~(keyword end) char
   char = letter (letter | digit | "_")*
   keyword = "$" | "task" | "for" | "false" | "true" | "or" | "and" | "not" | "if" | "elif" | "else" | "continue" | "return"
 
@@ -110,7 +110,8 @@ Ako {
   hex    = "#" hexDigit+
 
   // Other
-  space := "\t" | " " | "\n" | "\r" | comment | multilinecomment
-  comment = "//" (~"\n" any)*
+  space := "\t" | " " | "\n" | "\r"
+  comment = singlecomment | multilinecomment
+  singlecomment = "//" (~"\n" any)*
   multilinecomment = "/*" (~"*/"any)* "*/"
 }

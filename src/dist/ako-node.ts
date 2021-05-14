@@ -13,7 +13,9 @@ const {grammar, ASTBuilder} = getGrammar(akoGrammar)
 
 const toAst = (codeTxt: string) => {
   const match = grammar.match(codeTxt.toString())
-  if (!match) throw new Error(`Syntax Error`)
+  if (!match || match.failed()) {
+    throw new Error(`Syntax Error ${match.message}`)
+  }
   return ASTBuilder(match).toAST()
 }
 export {toAst, Interpreter, Analyzer}

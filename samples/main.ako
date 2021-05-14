@@ -1,5 +1,7 @@
+start = Time.now()
 fibo15 = @fibo(15)
-@print("Fibo(15) = {fibo15}")
+duration = Time.now() - start
+@print("Fibo(15) = {fibo15} (in {duration}ms)")
 
 @Math.main()
 
