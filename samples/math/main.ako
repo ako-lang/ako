@@ -18,3 +18,6 @@ task test [ { name = "param", default = 1 } ] {
 
 @print("math")
 @Vec.main()
+
+cwd = fs.cwd()
+@print("This is the math one {cwd}")

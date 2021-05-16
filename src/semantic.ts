@@ -6,13 +6,13 @@ export function getGrammar(akoGrammar: string) {
   const semantics = grammar.createSemantics()
 
   semantics.addOperation('calc', {
-    int: function (a) {
+    int: function (_) {
       return parseInt(this.sourceString, 10)
     },
-    float: function (a, b, c) {
+    float: function (_, __, ___) {
       return parseFloat(this.sourceString)
     },
-    hex: function (a, b) {
+    hex: function (_, __) {
       return Number(`0x${this.sourceString.slice(1)}`)
     }
   })
@@ -35,20 +35,20 @@ export function getGrammar(akoGrammar: string) {
 
   const ASTBuilder = semantics.addOperation('toAST', {
     // Operator
-    EqExpr_eq: (a, b, c) => debugWrapper(a, c, AkoElement.Operator.create('==', a.toAST(), c.toAST())),
-    EqExpr_neq: (a, b, c) => debugWrapper(a, c, AkoElement.Operator.create('!=', a.toAST(), c.toAST())),
-    EqExpr_lt: (a, b, c) => debugWrapper(a, c, AkoElement.Operator.create('<', a.toAST(), c.toAST())),
-    EqExpr_lte: (a, b, c) => debugWrapper(a, c, AkoElement.Operator.create('<=', a.toAST(), c.toAST())),
-    EqExpr_gt: (a, b, c) => debugWrapper(a, c, AkoElement.Operator.create('>', a.toAST(), c.toAST())),
-    EqExpr_gte: (a, b, c) => debugWrapper(a, c, AkoElement.Operator.create('>=', a.toAST(), c.toAST())),
-    BinExpr_and: (a, b, c) => debugWrapper(a, c, AkoElement.Operator.create('and', a.toAST(), c.toAST())),
-    BinExpr_or: (a, b, c) => debugWrapper(a, c, AkoElement.Operator.create('or', a.toAST(), c.toAST())),
+    EqExpr_eq: (a, _, c) => debugWrapper(a, c, AkoElement.Operator.create('==', a.toAST(), c.toAST())),
+    EqExpr_neq: (a, _, c) => debugWrapper(a, c, AkoElement.Operator.create('!=', a.toAST(), c.toAST())),
+    EqExpr_lt: (a, _, c) => debugWrapper(a, c, AkoElement.Operator.create('<', a.toAST(), c.toAST())),
+    EqExpr_lte: (a, _, c) => debugWrapper(a, c, AkoElement.Operator.create('<=', a.toAST(), c.toAST())),
+    EqExpr_gt: (a, _, c) => debugWrapper(a, c, AkoElement.Operator.create('>', a.toAST(), c.toAST())),
+    EqExpr_gte: (a, _, c) => debugWrapper(a, c, AkoElement.Operator.create('>=', a.toAST(), c.toAST())),
+    BinExpr_and: (a, _, c) => debugWrapper(a, c, AkoElement.Operator.create('and', a.toAST(), c.toAST())),
+    BinExpr_or: (a, _, c) => debugWrapper(a, c, AkoElement.Operator.create('or', a.toAST(), c.toAST())),
 
-    AddExpr_plus: (a, b, c) => debugWrapper(a, c, AkoElement.MathOp.create('+', a.toAST(), c.toAST())),
-    AddExpr_minus: (a, b, c) => debugWrapper(a, c, AkoElement.MathOp.create('-', a.toAST(), c.toAST())),
-    MulExpr_times: (a, b, c) => debugWrapper(a, c, AkoElement.MathOp.create('*', a.toAST(), c.toAST())),
-    MulExpr_divide: (a, b, c) => debugWrapper(a, c, AkoElement.MathOp.create('/', a.toAST(), c.toAST())),
-    MulExpr_mod: (a, b, c) => debugWrapper(a, c, AkoElement.MathOp.create('%', a.toAST(), c.toAST())),
+    AddExpr_plus: (a, _, c) => debugWrapper(a, c, AkoElement.MathOp.create('+', a.toAST(), c.toAST())),
+    AddExpr_minus: (a, _, c) => debugWrapper(a, c, AkoElement.MathOp.create('-', a.toAST(), c.toAST())),
+    MulExpr_times: (a, _, c) => debugWrapper(a, c, AkoElement.MathOp.create('*', a.toAST(), c.toAST())),
+    MulExpr_divide: (a, _, c) => debugWrapper(a, c, AkoElement.MathOp.create('/', a.toAST(), c.toAST())),
+    MulExpr_mod: (a, _, c) => debugWrapper(a, c, AkoElement.MathOp.create('%', a.toAST(), c.toAST())),
 
     // Type
     Number: (a) => debugWrapper(a, a, AkoElement.Number.create(a.calc())),
@@ -74,13 +74,13 @@ export function getGrammar(akoGrammar: string) {
     KeyValue: (a, _, c) => debugWrapper(a, c, AkoElement.KeyValue.create(a.toAST(), c.toAST())),
 
     //
-    Task: (a, b, c, d, e, f, g) => debugWrapper(a, g, AkoElement.Task.create(b.toAST(), d.toAST(), f.toAST(), false)),
-    SkipTask: (a, b, c, d, e, f, g) => debugWrapper(a, g, AkoElement.Task.create(b.toAST(), d.toAST(), f.toAST(), true)),
+    Task: (a, b, _, f, g) => debugWrapper(a, g, AkoElement.Task.create(b.asIteration().toAST(), f.toAST(), false)),
+    SkipTask: (a, b, _, f, g) => debugWrapper(a, g, AkoElement.Task.create(b.asIteration().toAST(), f.toAST(), true)),
     TaskDef: (a, b, c, d) => debugWrapper(a, d, AkoElement.TaskDef.create(b.toAST(), c.toAST(), d.toAST())),
-    Fn: (a, b, c, d, e, f) => debugWrapper(a, f, AkoElement.Function.create(a.toAST(), c.toAST(), e.toAST())),
+    Fn: (a, _, e, f) => debugWrapper(a, f, AkoElement.Function.create(a.toAST(), e.toAST())),
     Arguments: (a) => debugWrapper(a, a, a.asIteration().toAST()),
     ListOf: (a) => debugWrapper(a, a, a.asIteration().toAST()),
-    Pipe: (a, b, c) => debugWrapper(a, c, AkoElement.Pipe.create(a.toAST(), c.toAST())),
+    Pipe: (a, _, c) => debugWrapper(a, c, AkoElement.Pipe.create(a.toAST(), c.toAST())),
     Metadata: (a, b, c) => debugWrapper(a, c, AkoElement.Metadata.create(b.toAST(), c.toAST())),
 
     // Assign
@@ -94,13 +94,13 @@ export function getGrammar(akoGrammar: string) {
     // Loop
     Infinite: (a, b) => debugWrapper(a, b, AkoElement.LoopInfinite.create(b.toAST())),
     While: (a, b, c) => debugWrapper(a, c, AkoElement.LoopWhile.create(b.toAST(), c.toAST())),
-    Foreach: (a, b, c, d, e, f, g) => debugWrapper(a, g, AkoElement.LoopFor.create(b.toAST(), d.toAST(), f.toAST(), g.toAST())),
+    Foreach: (a, b, _, d, __, f, g) => debugWrapper(a, g, AkoElement.LoopFor.create(b.toAST(), d.toAST(), f.toAST(), g.toAST())),
     Block: (a, b, c) => debugWrapper(a, c, AkoElement.Block.create(b.toAST())),
     // Lambda: (a, b, c, d, e) => {
     //     console.log(e.sourceString)
     //     return AkoElement.Lambda.create(b.toAST(), e.toAST())
     // },
-    LambdaInline: (a, b, c, d, e) => debugWrapper(a, e, AkoElement.Lambda.create(b.toAST(), e.toAST())),
+    LambdaInline: (a, b, _, __, e) => debugWrapper(a, e, AkoElement.Lambda.create(b.toAST(), e.toAST())),
     Continue: (a) => debugWrapper(a, a, AkoElement.Continue.create()),
     Return: (a, b) => debugWrapper(a, b, AkoElement.Return.create(b.toAST())),
 
@@ -108,9 +108,9 @@ export function getGrammar(akoGrammar: string) {
     comment: (a) => debugWrapper(a, a, AkoElement.Comment.create(a.sourceString)),
     id: (a) => debugWrapper(a, a, AkoElement.String.create(a.sourceString)),
     Var_single: (a) => debugWrapper(a, a, AkoElement.Symbol.create(a.sourceString)),
-    Var_select: (a, b, c) => debugWrapper(a, c, AkoElement.SymbolSelect.create(a.toAST(), c.toAST())),
-    Var_range: (a, b, c, d, e, f) => debugWrapper(a, f, AkoElement.SymbolRange.create(a.toAST(), c.toAST(), e.toAST())),
-    Var_subscript: (a, b, c, d) => debugWrapper(a, d, AkoElement.SymbolSub.create(a.toAST(), c.toAST())),
+    Var_select: (a, _, c) => debugWrapper(a, c, AkoElement.SymbolSelect.create(a.toAST(), c.toAST())),
+    Var_range: (a, _, c, __, e, f) => debugWrapper(a, f, AkoElement.SymbolRange.create(a.toAST(), c.toAST(), e.toAST())),
+    Var_subscript: (a, _, c, d) => debugWrapper(a, d, AkoElement.SymbolSub.create(a.toAST(), c.toAST())),
     Last: (a) => debugWrapper(a, a, AkoElement.SymbolLast.create())
   })
 

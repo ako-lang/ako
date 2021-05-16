@@ -17,3 +17,6 @@ task DelayMessage ["msg"] {
 
 name = @ask('What is your name ?')
 @DelayMessage("Hello {name} !")
+
+cwd = FS.cwd()
+@print("This is the final {cwd}")

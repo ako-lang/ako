@@ -1,0 +1,5 @@
+id: "Vector2"
+paths:
+  code: '.'
+deps:
+- { scope: fs, file: ../../../ako-stdlib/fs, version: latest }

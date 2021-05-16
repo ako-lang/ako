@@ -6,3 +6,6 @@ for countdown in [5,4,3,2,1,0] {
         @print("Countdown Finish !")
     }
 }
+
+cwd = fs.cwd()
+@print("This is the vec one {cwd}")

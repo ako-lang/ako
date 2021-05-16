@@ -1,0 +1,6 @@
+id: "Test"
+entry:
+- main.ako
+deps:
+  - { scope: Math, file: ./math, version: latest }
+  - { scope: FS, file: ../../ako-stdlib/fs, version: latest }
