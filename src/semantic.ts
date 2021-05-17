@@ -96,10 +96,6 @@ export function getGrammar(akoGrammar: string) {
     While: (a, b, c) => debugWrapper(a, c, AkoElement.LoopWhile.create(b.toAST(), c.toAST())),
     Foreach: (a, b, _, d, __, f, g) => debugWrapper(a, g, AkoElement.LoopFor.create(b.toAST(), d.toAST(), f.toAST(), g.toAST())),
     Block: (a, b, c) => debugWrapper(a, c, AkoElement.Block.create(b.toAST())),
-    // Lambda: (a, b, c, d, e) => {
-    //     console.log(e.sourceString)
-    //     return AkoElement.Lambda.create(b.toAST(), e.toAST())
-    // },
     LambdaInline: (a, b, _, __, e) => debugWrapper(a, e, AkoElement.Lambda.create(b.toAST(), e.toAST())),
     Continue: (a) => debugWrapper(a, a, AkoElement.Continue.create()),
     Return: (a, b) => debugWrapper(a, b, AkoElement.Return.create(b.toAST())),

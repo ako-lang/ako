@@ -172,7 +172,6 @@ export class Interpreter {
         const entryData = stack.elementsData[i]
         if (entry.type === 'TaskDef') {
           AkoElement.TaskDef.execute({vm: this, stack}, entry, entryData, 0.1)
-          // console.log('Found TaskDef', entry, entryData)
         }
       }
     }

@@ -7,9 +7,10 @@ import path from 'path'
 import {listAkoFiles} from '../../helpers/folder'
 import akoGrammar from '../../../ako_grammar.txt'
 import {AnalyzeInfo, Analyzer} from '../../analyzer'
-import {Command} from '../../core'
+import {Command, getModulePath} from '../../core'
 import chalk from 'chalk'
 import yaml from 'js-yaml'
+import {parseDep} from './helpers'
 
 function loadAkoModule(
   grammar: ohm.Grammar,
@@ -33,10 +34,16 @@ function loadAkoModule(
 
   // load deps
   if (mod.deps) {
-    for (const dep of mod.deps) {
+    for (const dependency of mod.deps) {
+      const dep = parseDep(dependency)
       const depScope = 'scope' in dep ? dep.scope : undefined
-      if ('file' in dep) {
-        loadAkoModule(grammar, ASTBuilder, vm, path.join(projectFolder, dep.file), info, currentScope, depScope)
+      if (!('url' in dependency)) continue
+      if (dep.url.startsWith('.')) {
+        loadAkoModule(grammar, ASTBuilder, vm, path.join(projectFolder, dep.url), info, currentScope, depScope)
+      } else {
+        let localPath = getModulePath(dep)
+        if ('path' in dep) localPath = path.join(localPath, dep.path)
+        loadAkoModule(grammar, ASTBuilder, vm, localPath, info, currentScope, depScope)
       }
       depsScope.set(depScope, [...currentScope, depScope].join('.'))
     }
@@ -179,11 +186,13 @@ export function makeRunCommands(program: commander.Command): void {
 
       // Open a project
       const folder = path.dirname(source)
-      const modulePath = path.join(folder, 'manifest.yaml')
+      const target = path.relative('.', folder)
+      if (source && target) process.chdir(target)
+      const modulePath = path.join('.', 'manifest.yaml')
       if (fs.existsSync(modulePath)) {
         const info: AnalyzeInfo[] = []
-        loadAkoModule(grammar, ASTBuilder, interpreter, folder, info)
-      } else {
+        loadAkoModule(grammar, ASTBuilder, interpreter, '.', info)
+      } else if (fs.existsSync(source)) {
         const codeTxt = fs.readFileSync(path.resolve(source))
         const match = grammar.match(codeTxt.toString())
         if (!match || match.failed()) {
@@ -191,6 +200,10 @@ export function makeRunCommands(program: commander.Command): void {
         }
         const ast = ASTBuilder(match).toAST()
         interpreter.createStack(ast)
+      } else {
+        console.log(chalk.bold(chalk.red(`[AKO CLI] Error ! Cannot run this code, this is not a valid Ako Module.`)))
+        process.exit(1)
+        return
       }
 
       // update interpreter with setInterval

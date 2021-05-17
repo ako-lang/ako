@@ -78,6 +78,7 @@
     "chalk": "^4.1.1",
     "commander": "^7.2.0",
     "dateformat": "^4.5.1",
+    "gitly": "^2.1.0",
     "js-yaml": "^4.1.0"
   }
 }

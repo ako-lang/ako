@@ -18,8 +18,13 @@ export function makeNewCommands(program: commander.Command): void {
         path.join(filepath, 'manifest.yaml'),
         `id: "${name}"
 description: "My description"
-entry:
-- src/index.ako
+entry: src/index.ako
+deps: []
+`
+      )
+      fs.writeFileSync(
+        path.join(filepath, '.gitignore'),
+        `.ako/
 `
       )
       fs.writeFileSync(
@@ -31,7 +36,6 @@ This is a [Ako module](https://github.com/ako-lang/ako)
 
 ## Commands
 \`\`\`sh
-ako install
 ako run
 \`\`\`
 `

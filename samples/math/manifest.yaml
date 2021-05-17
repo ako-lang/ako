@@ -1,6 +1,6 @@
 id: "Math"
 deps:
-- { scope: Vec, file: ../vec, version: latest }
-- { scope: fs, file: ../../../ako-stdlib/fs, version: latest }
+- { scope: Vec, url: ../vec, version: latest }
+- { scope: fs, url: ../../../ako-stdlib/fs, version: latest }
 paths:
   code: '.'

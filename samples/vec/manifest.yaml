@@ -2,4 +2,4 @@ id: "Vector2"
 paths:
   code: '.'
 deps:
-- { scope: fs, file: ../../../ako-stdlib/fs, version: latest }
+- { scope: fs, url: github:ako-lang/ako-libraries#develop, path: 'fs' }

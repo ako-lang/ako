@@ -59,7 +59,7 @@ Ako tries to fill the gap by providing at the same time:
 npm install -g ako-lang
 
 # Execute
-ako ./test.ako
+ako run ./test.ako
 ```
 
 ## Standalone Executable
@@ -68,7 +68,7 @@ You can directly use standalone executable of the interpreter : [Release page](h
 
 It's compiled for **Windows**, **Mac** and **Linux** and once downloaded, you can use it to run Ako scripts
 ```sh
-./ako.exe test.ako
+./ako.exe run test.ako
 ```
 
 ## CDN
@@ -93,7 +93,7 @@ npm install # install deps
 npm run build
 npm link # link the local file globally
 
-ako ./samples/ # use the interpreter
+ako run ./samples/ # use the interpreter
 ```
 
 ## Other

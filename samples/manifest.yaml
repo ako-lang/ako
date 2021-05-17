@@ -1,6 +1,11 @@
-id: "Test"
+id: Test
 entry:
-- main.ako
+  - main.ako
+paths:
+  code: 'src'
 deps:
-  - { scope: Math, file: ./math, version: latest }
-  - { scope: FS, file: ../../ako-stdlib/fs, version: latest }
+  - url: ./math
+    scope: Math
+  - url: github:ako-lang/ako-libraries#develop
+    path: fs
+    scope: FS
