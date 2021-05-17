@@ -15,8 +15,8 @@ Ako {
   Metadata = "##" id Term
 
   TaskDef = "task" id (Array)? Block
-  SkipTask = "@@" (id ".")? id "(" NamedArguments ")"
-  Task = "@" (id ".")? id "(" NamedArguments ")"
+  SkipTask = "@@" ListOf<id, "."> "(" NamedArguments ")"
+  Task = "@" ListOf<id, "."> "(" NamedArguments ")"
   NamedArguments = ListOf<(KeyValue | Expr), ",">
   Arguments = ListOf<Expr, ",">
 
@@ -26,7 +26,7 @@ Ako {
   ExprItem = LambdaInline | MathExpr
 
   Term = Fn | bool | Var | Number | String | Array | Dictionary | Last
-  Fn = (id ".")? id "(" Arguments ")"
+  Fn = ListOf<id, "."> "(" Arguments ")"
   // Lambda = "(" ListOf<id, ","> ")" "=>" Block
   LambdaInline = "(" ListOf<id, ","> ")" "=>" Expr
 

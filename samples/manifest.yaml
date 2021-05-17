@@ -1,0 +1,11 @@
+id: Test
+entry:
+  - main.ako
+paths:
+  code: 'src'
+deps:
+  - url: ./math
+    scope: Math
+  - url: github:ako-lang/ako-libraries#develop
+    path: fs
+    scope: FS

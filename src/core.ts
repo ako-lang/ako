@@ -61,3 +61,14 @@ export function isString(val: any): boolean {
 export function isObject(val: any): boolean {
   return Object.prototype.toString.call(val) === '[object Object]'
 }
+
+export function getModulePath(dep: {url: string}): string {
+  let name = dep.url.replace(/\\/g, '/').replace(/\//g, '-')
+  let version = 'latest'
+  if (name.indexOf(':') != -1) name = name.substring(name.indexOf(':') + 1)
+  if (name.indexOf('#') != -1) {
+    version = name.substring(name.indexOf('#') + 1)
+    name = name.substring(0, name.indexOf('#'))
+  }
+  return `./.ako/deps/${name}@${version}/`
+}

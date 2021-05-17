@@ -57,16 +57,19 @@ const evalArgs = (ctx, args) => {
 }
 
 export const Task = {
-  create: (namespace, name, args, skip) => {
-    return {type: 'Task', namespace, name, args, skip}
+  create: (name, args, skip) => {
+    return {
+      type: 'Task',
+      name: name
+        .map((x) => x.value.trim())
+        .filter((x) => !!x)
+        .join('.'),
+      args,
+      skip
+    }
   },
   name: (ctx, entry) => {
-    let fn = ctx.vm.evaluate(ctx, entry.name)
-    if (entry.namespace && entry.namespace.length > 0) {
-      const namespace = ctx.vm.evaluate(ctx, entry.namespace[0], true)
-      fn = `${namespace}.${fn}`
-    }
-    return fn
+    return ctx.vm.evaluate(ctx, entry.name)
   },
   execute: (ctx, entry, entryData, timeRemains) => {
     if (entry.skip) {
@@ -126,18 +129,18 @@ export const TaskDef = {
 }
 
 export const Function = {
-  create: (namespace, name, args) => {
-    return {type: 'Function', namespace, name, args}
+  create: (name, args) => {
+    return {
+      type: 'Function',
+      name: name
+        .map((x) => x.value)
+        .filter((x) => !!x.trim())
+        .join('.'),
+      args
+    }
   },
   name: (ctx: Context, entry) => {
-    let fn = ctx.vm.evaluate(ctx, entry.name)
-    if (entry.namespace) {
-      const entries = entry.namespace.map((x) => ctx.vm.evaluate(ctx, x))
-      if (entries.length > 0) {
-        fn = `${entries.join(',')}.${ctx.vm.evaluate(ctx, entry.name)}`
-      }
-    }
-    return fn
+    return ctx.vm.evaluate(ctx, entry.name)
   },
   evaluate: (ctx: Context, entry) => {
     const name = Function.name(ctx, entry)

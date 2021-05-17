@@ -84,7 +84,6 @@ export class Analyzer {
       const key = this.interpreter.evaluate(ctx, variable, false)
       if (!variables.has(key.value)) {
         const val = variable as CommandDebug
-        // console.log(variable, val)
         info.push(
           Object.assign(
             {},

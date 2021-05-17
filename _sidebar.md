@@ -1,5 +1,7 @@
 * [Ako](/)
     * [Getting Started](./docs/getting_started.md)
+    * [CLI](./docs/cli_index.md)
+    * [Module](./docs/module_index.md)
 * [Grammar](./docs/grammar_index.md)
     * [Basic Types](./docs/grammar/grammar_basic.md)
     * [Conditional](./docs/grammar/grammar_cond.md)

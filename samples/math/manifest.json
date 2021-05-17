@@ -1,7 +1,0 @@
-{
-  "id": "Math module",
-  "namespace": "Math",
-  "deps": [
-    "../vec"
-  ]
-}

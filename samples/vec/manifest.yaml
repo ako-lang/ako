@@ -1,0 +1,5 @@
+id: "Vector2"
+paths:
+  code: '.'
+deps:
+- { scope: fs, url: github:ako-lang/ako-libraries#develop, path: 'fs' }
