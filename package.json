@@ -1,6 +1,6 @@
 {
   "name": "ako-lang",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Simple and easy to use programming language. Ako is designed to be used as both a programming language and a visual programming language.",
   "main": "./dist/ako-node.js",
   "types": "./src/dist/ako-node.ts",
@@ -60,7 +60,7 @@
     "@types/node": "^14.14.41",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
-    "esbuild": "^0.11.20",
+    "esbuild": "^0.11.23",
     "esbuild-register": "^2.5.0",
     "eslint": "^7.26.0",
     "mocha": "^8.4.0",
